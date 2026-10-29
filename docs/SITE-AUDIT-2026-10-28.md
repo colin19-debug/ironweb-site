@@ -158,7 +158,8 @@ equivalent yet.
   lines + CSS) once replaced, speed-to-lead copy.
 - **One 1,400-line stylesheet** with the demo's styles appended; fine for performance (92 KB total CSS) but hard to
   maintain. `src/pages.mjs` is 1,100+ lines holding every page.
-- **Root clutter:** source PNGs (4 MB), an unused `CLAUDE-template.md`, `temporary screenshots/`.
+- **Root files:** the PNG/SVG sources in the root are read by `scripts/images.mjs` and `scripts/shot.mjs`, so they
+  stay. `temporary screenshots/` is git-ignored. (Corrected in stage 0: not clutter.)
 - **Test suite:** 267 browser checks plus 41 function tests, good coverage; two homepage scroll checks are flaky.
   Many checks assert old copy, so they will need updating as copy changes (that is expected, not a problem).
 - **Performance:** hero video 0.8 MB desktop / 0.4 MB mobile with posters; images 3.5 MB total across all pages.
@@ -194,6 +195,7 @@ Each stage is built locally, reviewed by Colin, then deployed only on his word.
 
 **Stage 0: Safety net (no visible change)**
 `git init` + first commit; private GitHub remote; delete the stray Netlify site (with Colin's OK); tidy root files.
+Status 2026-10-28: git baseline committed (bbab09b). Remote and stray-site deletion left to Colin.
 
 **Stage 1: Decide the message (doc only)**
 Settle the six decisions above. Write a one-page messaging sheet (one-liner, audience, offer names, primary and

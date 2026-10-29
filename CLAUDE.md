@@ -27,6 +27,8 @@ Read `CLAUDE-CODE-HANDOFF.md` (approved brief), `README.md` and `docs/INTEGRATIO
 - Don't deploy to production without Colin's explicit instruction.
 
 ## Decision log (newest first)
+- 2026-10-28: Project is now a git repo (branch main, baseline bbab09b = live deploy 6ae1554d). Commit after each
+  cleanup stage; LF line endings (core.autocrlf false). Site audit + staged cleanup plan: docs/SITE-AUDIT-2026-10-28.md.
 - 2026-10-27: AI receptionist enabled on the demo (Colin set CONTRACTOR_DEMO_RECEPTIONIST_ENABLED=true, NUMBER
   +17744867776, IronWeb's main line). Deployed 6ae1554d659153d5269de27f. Next: site cleanup (one story, one demo,
   one primary CTA); awaiting Colin's decisions + context from other agents.
