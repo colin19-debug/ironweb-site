@@ -70,7 +70,7 @@ export const PRODUCTS = [
     price: '$97',
     cadence: 'per month',
     extra: '+ $600 one-time build',
-    includes: ['Website built for your trade and your towns', 'Hosting, updates and upkeep', 'Instant text reply to every website inquiry', 'Landing pages and funnels when you run a campaign'],
+    includes: ['Website built for your trade and your towns', 'Hosting, updates and maintenance, plus a monthly check-in', 'Instant text reply to every website inquiry', 'Landing pages and funnels when you run a campaign'],
   },
   {
     key: 'grow',
@@ -110,7 +110,26 @@ export const PROCESS = [
   { name: 'Audit', text: 'A free report on how your business shows up online and where calls and leads slip through.' },
   { name: 'Plan', text: 'We walk through it together and pick the fixes worth doing first. No package you don\'t need.' },
   { name: 'Build', text: 'Colin sets it up: the website, the automations, the ads. You keep working.' },
-  { name: 'Grow', text: 'It runs every day. Add the next piece when the first one is paying for itself.' },
+  { name: 'Run', text: 'We keep it running: hosting, updates, maintenance and a monthly check-in. Something breaks, call Colin.' },
+];
+
+// Ongoing partnership: what every client gets after launch (Colin, 2026-10-29).
+export const CARE = [
+  { h: 'Hosting', p: 'Your site stays online, fast and secure. Nothing for you to renew or patch.' },
+  { h: 'Updates and maintenance', p: 'Changes to your site, your automations and your messages, handled as your business changes.' },
+  { h: 'A monthly check-in', p: 'Once a month we look at what came in and what to adjust, together.' },
+  { h: 'On call', p: 'Something stops working? Call Colin and it gets fixed. No ticket queue.' },
+];
+
+// Typical agency vs. IronWeb. Every row must stay literally true.
+export const COMPARE = [
+  { them: 'Accounts set up in their name', us: 'You own everything: domain, phone number and contacts' },
+  { them: 'Leaving means starting over', us: 'Part ways any time and take it all with you' },
+  { them: 'Launch it and move on', us: 'Hosting, updates, maintenance and a monthly check-in' },
+  { them: 'Something breaks, open a ticket', us: 'Something breaks, call Colin' },
+  { them: 'An account manager you never met', us: 'You talk to the person doing the work' },
+  { them: '"Call for pricing"', us: 'Prices published, one-time and monthly spelled out' },
+  { them: 'They take over your customer conversations', us: 'You stay in control of your customers and jobs' },
 ];
 
 export const HOME_FAQ = [
@@ -118,7 +137,7 @@ export const HOME_FAQ = [
   { q: "I don't have time to learn new software.", a: 'You don\'t have to learn much. Colin sets everything up preloaded for contractors and walks you through it. Most of it runs without you touching it.' },
   { q: 'What if it texts the wrong thing?', a: "It won't say anything you haven't approved. You sign off on every message before it goes live, and you can change it any time." },
   { q: "I'm too small for this.", a: "That's who it's for. If you're the one answering the phone, doing the work and sending the invoices, this is the help you don't have time to hire." },
-  { q: 'What happens if I cancel?', a: 'You keep your contacts and your customer list. No contracts that hold you hostage.' },
+  { q: 'What happens if I want to leave?', a: 'You take everything with you: your domain, your phone number and an export of your contacts. It was always yours. No contracts that hold you hostage.' },
 ];
 
 export const WORK = [

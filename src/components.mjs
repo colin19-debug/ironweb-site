@@ -139,7 +139,7 @@ export function hero() {
       <p class="eyebrow hero-eyebrow">Contractors <span class="slash">/</span> Trades</p>
       <h1 id="hero-title" class="hero-title">Systems That <span class="accent">Stick.</span></h1>
       <p class="hero-kicker">Never miss another opportunity.</p>
-      <p class="hero-sub hero-sub--wedge">A free audit shows where calls, leads and reviews are slipping through, and what to fix first.</p>
+      <p class="hero-sub hero-sub--wedge">We build it, configure it, and keep the technology running. You stay in control of your customers and jobs.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="${AUDIT_HREF}">${AUDIT_CTA} ${icon('arrow')}</a>
         <a class="btn btn-outline" href="${DEMO_HREF}">${DEMO_CTA}</a>

@@ -1,6 +1,6 @@
 // Page bodies. Each export returns { path, title, description, body, ... } for scripts/build.mjs.
 // v3 (2026-10-28): docs/IRONWEB-V3-SPEC.md. One primary action per section (red), secondary actions quieter.
-import { SITE, PRODUCTS, AUDIT_POINTS, PROCESS, HOME_FAQ, WORK, TESTIMONIALS, HEADSHOT, AUTOMATIONS, AUDIT_HREF, AUDIT_CTA, DEMO_HREF, DEMO_CTA } from './data.mjs';
+import { SITE, PRODUCTS, AUDIT_POINTS, PROCESS, HOME_FAQ, WORK, TESTIMONIALS, HEADSHOT, AUTOMATIONS, CARE, COMPARE, AUDIT_HREF, AUDIT_CTA, DEMO_HREF, DEMO_CTA } from './data.mjs';
 import {
   esc, icon, hero, pageHead, sectionLabel, auditForm, previewForm, interactiveDemo,
   bookingBlock, contactLines, faqList, ctaBand,
@@ -74,6 +74,18 @@ function workCards(list = WORK, { large = false } = {}) {
 }
 
 
+function compareTable() {
+  return `<div class="compare-wrap">
+    <table class="compare">
+      <caption class="sr-only">A typical agency compared with IronWeb</caption>
+      <thead><tr><th scope="col">Typical agency</th><th scope="col">IronWeb</th></tr></thead>
+      <tbody>
+        ${COMPARE.map((r) => `<tr><td>${icon('x', 'i i-no')}<span>${esc(r.them)}</span></td><td>${icon('check', 'i i-yes')}<span>${esc(r.us)}</span></td></tr>`).join('\n        ')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
 function processSteps() {
   return `<ol class="steps">
     ${PROCESS.map((s, i) => `<li class="step">
@@ -122,7 +134,7 @@ export const home = {
   path: '/',
   title: '',
   fullTitle: 'Websites, Ads and Automations for Contractors | Southeastern MA | IronWeb Digital',
-  description: 'Systems That Stick. A free audit shows where calls, leads and reviews slip through. Websites from $600 + $97/month, social and ads $597/month, automations $297/month. For contractors and trades.',
+  description: 'Systems That Stick. We build it, configure it and keep it running; you stay in control and own everything. Websites from $600 + $97/month, social and ads $597/month, automations $297/month. For contractors and trades.',
   overlayHeader: true,
   preloadHero: true,
   jsonld: [ORG, faqSchema(HOME_FAQ)],
@@ -153,6 +165,18 @@ export const home = {
   </div>
 </section>
 
+<section class="section" id="partner" aria-labelledby="partner-title">
+  <div class="wrap">
+    <div class="section-head">
+      ${sectionLabel('Ongoing partner')}
+      <h2 id="partner-title">We don't hand it off and disappear.</h2>
+      <p>We build it, configure it, and keep the technology running. You stay in control of your customers and jobs, and you own everything we set up.</p>
+    </div>
+    ${facts(CARE)}
+    ${compareTable()}
+  </div>
+</section>
+
 <section class="section" id="demo" aria-labelledby="demo-title">
   <div class="wrap">
     <div class="panel demo demo--callout">
@@ -180,7 +204,7 @@ export const home = {
     <div class="section-head">
       ${sectionLabel('Process')}
       <h2 id="process-title">How it works.</h2>
-      <p>Four steps, in order, until it runs on its own.</p>
+      <p>Four steps. The last one doesn't end: we stay on to keep it running.</p>
     </div>
     ${processSteps()}
   </div>
@@ -516,7 +540,7 @@ export const about = {
     <div class="founder-text">
       <p>With experience in construction, sitework, and inside sales, Colin knows both sides: doing the work, and chasing the next job.</p>
       <p>On a job site, answering calls, returning texts and keeping a presence online all compete with the work itself. In sales, the fastest reply and the steadiest follow-up usually win the job.</p>
-      <p>IronWeb sets up the systems that handle that front office for contractors, in the right order, explained plainly, until it runs on its own. AI is a tool here, not a replacement for you.</p>
+      <p>IronWeb builds the systems that handle that front office for contractors, then stays on to keep them running. You stay in control of your customers and jobs, and you own everything we set up. AI is a tool here, not a replacement for you.</p>
     </div>
   </div>
 </section>
@@ -531,6 +555,8 @@ export const about = {
       { h: 'Published prices', p: 'Every service has its price on its page, and one-time and monthly costs are spelled out.' },
       { h: 'Honest scope', p: 'You know what is included, what is quoted separately and what we cannot promise. No guaranteed lead counts or rankings.' },
       { h: 'You talk to Colin', p: 'The audit, the plan and the follow-up come from the person doing the work.' },
+      { h: 'You own everything', p: 'Your domain, your phone number and your contacts. If we ever part ways, you take all of it with you.' },
+      { h: 'We stay on', p: 'Hosting, updates, maintenance and a monthly check-in. Something breaks, call Colin.' },
       { h: 'Contractors and trades', p: 'Roofers, painters, landscapers, carpenters, site work and property maintenance. Based in Swansea, Massachusetts.' },
     ])}
   </div>

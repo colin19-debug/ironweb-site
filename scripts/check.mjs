@@ -116,7 +116,7 @@ ok(await page.$('.hero-video') !== null, 'animated video hero kept');
 ok(/Systems That Stick\./.test(await page.$eval('.site-footer', (f) => f.textContent)), 'footer tagline');
 ok(hero.ld.some((j) => j['@type'] === 'ProfessionalService') && hero.ld.some((j) => j['@type'] === 'FAQPage'), 'home schema: business + FAQ');
 const order = await page.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id || s.className));
-ok(JSON.stringify(order) === JSON.stringify(['hero', 'free-audit', 'services', 'demo', 'process', 'work', 'faq', 'section cta-band']), `home order: ${order.join(' > ')}`);
+ok(JSON.stringify(order) === JSON.stringify(['hero', 'free-audit', 'services', 'partner', 'demo', 'process', 'work', 'faq', 'section cta-band']), `home order: ${order.join(' > ')}`);
 ok(await page.$$eval('#demo a.btn', (a) => a.every((x) => x.getAttribute('href') === '/demo/')), 'home demo teaser links to /demo/');
 ok(!(await page.$('#testimonials')), 'no testimonials block until real quotes exist');
 ok(!(await page.$('form[data-lead-form]')), 'home has no form (one path: the audit on Contact)');

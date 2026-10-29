@@ -1428,3 +1428,22 @@ main > .section:last-child { padding-bottom: var(--section-y); }
 .audit-list .i { flex: none; color: var(--red); width: 19px; height: 19px; margin-top: 3px; stroke-width: 2.4; }
 .founder-photo--about { display: block; width: min(100%, 320px); height: auto; aspect-ratio: 1; object-fit: cover; margin-bottom: 28px; border: 1px solid var(--line); }
 @media (max-width: 920px) { .plan-side { align-self: stretch; } }
+
+/* ---------- partner: typical agency vs IronWeb ---------- */
+.compare-wrap { margin-top: clamp(40px, 5vw, 72px); }
+.compare { width: 100%; border-collapse: collapse; font-size: 16px; }
+.compare th { text-align: left; font-family: var(--display); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--steel); padding: 0 20px 14px 0; border-bottom: 1px solid var(--line-strong); }
+.compare th:last-child { color: var(--text); }
+.compare td { width: 50%; vertical-align: top; padding: 16px 20px 16px 0; border-bottom: 1px solid var(--line); }
+.compare td span { display: block; }
+.compare td > .i { float: left; margin: 4px 10px 0 0; width: 17px; height: 17px; stroke-width: 2.4; }
+.compare td:first-child { color: var(--steel); }
+.compare td:first-child .i { color: var(--steel); opacity: .7; }
+.compare td:last-child { color: var(--text); font-weight: 600; }
+.compare td:last-child .i { color: var(--red); }
+.compare td span { overflow: hidden; }
+@media (max-width: 720px) {
+  .compare thead { display: none; }
+  .compare tr { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .compare td { display: block; width: auto; padding: 4px 0; border: 0; }
+}
