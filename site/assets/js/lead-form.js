@@ -154,25 +154,6 @@
     showStatus(form, 'error', '<strong>That didn\'t send.</strong> Check your connection and try again, or ' + fallback.charAt(0).toLowerCase() + fallback.slice(1));
   }
 
-  // "Ask about this automation" links arrive as /contact/?interest=<key>#inquiry: preselect the service
-  // and start the message so the visitor doesn't retype it. Visible, editable, nothing hidden.
-  var INTERESTS = {
-    'missed-call': 'Missed-call text-back', 'speed-to-lead': 'Instant inquiry response', 'follow-up': 'Follow-up sequences',
-    reviews: 'Review requests', appointments: 'Appointment admin', 'local-search': 'Local search setup',
-  };
-  try {
-    var interest = INTERESTS[new URLSearchParams(location.search).get('interest')];
-    var inq = document.getElementById('inquiry');
-    if (interest && inq && inq.tagName === 'FORM') {
-      var svc = inq.querySelector('[name="service"]');
-      var msg = inq.querySelector('[name="message"]');
-      if (svc) svc.value = interest === 'Local search setup' ? 'Build' : 'Automations';
-      if (msg && !msg.value) msg.value = "I'd like to know more about: " + interest + '.';
-      var det = inq.querySelector('details');
-      if (det) det.open = true;
-    }
-  } catch (e) { /* prefill is a convenience only */ }
-
   document.querySelectorAll('form[data-lead-form]').forEach(function (form) {
     form.setAttribute('novalidate', '');
     form.addEventListener('submit', function (e) { e.preventDefault(); submit(form); });

@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contractor Core Interactive Demo | IronWeb Digital</title>
-<meta name="description" content="Try the Contractor Core system yourself: submit an estimate request to a demo home-service business and see the follow-up, the AI receptionist and the pipeline a contractor sees.">
+<title>Interactive Contractor Demo | IronWeb Digital</title>
+<meta name="description" content="Try the system yourself: submit an estimate request to a demo home-service business and see the follow-up, the AI receptionist and the pipeline a contractor sees.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://ironwebdigital.com/contractor-demo/">
+<link rel="canonical" href="https://ironwebdigital.com/demo/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#0B0B0F">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="IronWeb Digital">
-<meta property="og:title" content="Contractor Core Interactive Demo | IronWeb Digital">
-<meta property="og:description" content="Try the Contractor Core system yourself: submit an estimate request to a demo home-service business and see the follow-up, the AI receptionist and the pipeline a contractor sees.">
-<meta property="og:url" content="https://ironwebdigital.com/contractor-demo/">
+<meta property="og:title" content="Interactive Contractor Demo | IronWeb Digital">
+<meta property="og:description" content="Try the system yourself: submit an estimate request to a demo home-service business and see the follow-up, the AI receptionist and the pipeline a contractor sees.">
+<meta property="og:url" content="https://ironwebdigital.com/demo/">
 <meta property="og:image" content="https://ironwebdigital.com/assets/img/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,9 +23,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Orbitron:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=db26ee58c5">
+<link rel="stylesheet" href="/assets/css/site.css?v=3048fde28f">
 <script src="/assets/js/main.js?v=dd62f3de98" defer></script>
-<script src="/assets/js/contractor-demo.js?v=911e09aa8f" defer></script>
+<script src="/assets/js/contractor-demo.js?v=79f81ba70c" defer></script>
 
 </head>
 <body class="page-inner">
@@ -35,19 +35,19 @@
     <a class="brand" href="/" aria-label="IronWeb Digital home"><img src="/assets/img/ironweb-logo.svg" alt="IronWeb Digital" width="680" height="160"></a>
     <nav class="primary-nav" aria-label="Primary">
       <ul class="nav-list">
+      <li><a class="nav-link" href="/">Home</a></li>
       <li><a class="nav-link" href="/portfolio/">Portfolio</a></li>
       <li class="has-menu">
         <button class="nav-link menu-toggle" type="button" aria-expanded="false" aria-controls="services-menu">Services<svg class="i i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6l6 -6"/></svg></button>
         <ul class="submenu" id="services-menu">
-          <li><a href="/services/"><span>All services</span><small>How it all fits together</small></a></li>
-          <li><a href="/build/"><span>Websites</span><small>From $600 one-time</small></a></li>
-          <li><a href="/automations/"><span>Automations</span><small>Start at $97/month</small></a></li>
-          <li><a href="/automations/bundles/"><span>Bundles</span><small>Automation packages</small></a></li>
-          <li><a href="/growth/"><span>Growth</span><small>Content and ads</small></a></li>
-          <li><a href="/contractor-demo/" aria-current="page"><span>Contractor demo</span><small>Try the system yourself</small></a></li>
+          <li><a href="/build/"><span>IW Build</span><small>Websites, $600 + $97/month</small></a></li>
+          <li><a href="/grow/"><span>IW Grow</span><small>Social, ads and leads, $597/month</small></a></li>
+          <li><a href="/operate/"><span>IW Operate</span><small>Automations, $297/month</small></a></li>
         </ul>
       </li>
+      <li><a class="nav-link" href="/demo/" aria-current="page">Demo</a></li>
       <li><a class="nav-link" href="/about/">About</a></li>
+      <li><a class="nav-link" href="/contact/">Contact</a></li>
       </ul>
     </nav>
     <a class="btn-cta btn-call" href="tel:+17744867776" aria-label="Call IronWeb Digital at (774) 486-7776"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/></svg><span>(774) 486-7776</span></a>
@@ -56,15 +56,17 @@
   </div>
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
     <ul>
+      <li><a href="/">Home</a></li>
       <li><a href="/portfolio/">Portfolio</a></li>
       <li class="mobile-group"><span>Services</span>
-        <ul><li><a href="/services/">All services</a></li><li><a href="/build/">Websites</a></li><li><a href="/automations/">Automations</a></li><li><a href="/automations/bundles/">Bundles</a></li><li><a href="/growth/">Growth</a></li><li><a href="/contractor-demo/">Contractor demo</a></li></ul>
+        <ul><li><a href="/build/">IW Build</a></li><li><a href="/grow/">IW Grow</a></li><li><a href="/operate/">IW Operate</a></li></ul>
       </li>
+      <li><a href="/demo/">Demo</a></li>
       <li><a href="/about/">About</a></li>
       <li><a href="/contact/">Contact</a></li>
     </ul>
-    <a class="btn btn-primary btn-block" href="/#demo">Explore the demo <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg></a>
-    <a class="btn btn-outline btn-block" href="/contact/#talk">Let's talk about your website</a>
+    <a class="btn btn-primary btn-block" href="/contact/#audit">Request your free audit <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg></a>
+    <a class="btn btn-outline btn-block" href="/demo/">See how the system works</a>
     <p class="mobile-contact"><a href="tel:+17744867776">(774) 486-7776</a></p>
   </nav>
 </header>
@@ -73,11 +75,11 @@
   <div class="page-head-art" aria-hidden="true"></div>
   <div class="wrap">
     <p class="cd-chip"><span class="cd-chip-dot" aria-hidden="true"></span>Interactive demo · Powered by IronWeb</p>
-    <h1 id="cd-title">Your Next Customer Is Calling. Is Your Business Ready?</h1>
+    <h1 id="cd-title">Your next customer is calling. Is your business ready?</h1>
     <p class="lead">Experience the system that captures inquiries, follows up with customers, and keeps your jobs organized, even when you're busy working.</p>
     <div class="hero-actions cd-hero-actions">
-      <a class="btn btn-primary" href="#experience" data-cd-start>Try the Live Demo <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg></a>
-      <a class="btn btn-outline" href="#how">See How It Works</a>
+      <a class="btn btn-primary" href="#experience" data-cd-start>Try the live demo <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg></a>
+      <a class="btn btn-outline" href="#how">See how it works</a>
     </div>
   </div>
 </section>
@@ -90,9 +92,9 @@
       <p>You play the customer. We show you what happens next, from the first reply to the pipeline the business owner sees.</p>
     </div>
     <ol class="steps steps--3">
-      <li class="step"><span class="step-n" aria-hidden="true">01</span><h3>Be the Customer</h3><p>Submit a realistic estimate request to a demo home-service business.</p></li>
-      <li class="step"><span class="step-n" aria-hidden="true">02</span><h3>Experience the Response</h3><p>See the follow-up and try the AI receptionist.</p></li>
-      <li class="step"><span class="step-n" aria-hidden="true">03</span><h3>See Behind the Scenes</h3><p>Explore the pipeline and how the system keeps every job organized.</p></li>
+      <li class="step"><span class="step-n" aria-hidden="true">01</span><h3>Be the customer</h3><p>Submit a realistic estimate request to a demo home-service business.</p></li>
+      <li class="step"><span class="step-n" aria-hidden="true">02</span><h3>Experience the response</h3><p>See the follow-up and try the AI receptionist.</p></li>
+      <li class="step"><span class="step-n" aria-hidden="true">03</span><h3>See behind the scenes</h3><p>Explore the pipeline and how the system keeps every job organized.</p></li>
     </ol>
   </div>
 </section>
@@ -102,9 +104,9 @@
     <h2 id="exp-title" class="sr-only">Interactive demo</h2>
     <div class="cd-bar">
       <ol class="cd-progress" aria-label="Demo progress">
-        <li><button type="button" data-goto="1" aria-current="step"><span class="cd-n">01</span><span class="cd-t">Be the Customer</span></button></li>
-        <li><button type="button" data-goto="2" disabled><span class="cd-n">02</span><span class="cd-t">Experience the Response</span></button></li>
-        <li><button type="button" data-goto="3" disabled><span class="cd-n">03</span><span class="cd-t">See Behind the Scenes</span></button></li>
+        <li><button type="button" data-goto="1" aria-current="step"><span class="cd-n">01</span><span class="cd-t">Be the customer</span></button></li>
+        <li><button type="button" data-goto="2" disabled><span class="cd-n">02</span><span class="cd-t">Experience the response</span></button></li>
+        <li><button type="button" data-goto="3" disabled><span class="cd-n">03</span><span class="cd-t">See behind the scenes</span></button></li>
       </ol>
       <button type="button" class="cd-restart" data-cd-restart>Restart demo</button>
     </div>
@@ -165,7 +167,7 @@
     <div class="cd-panel" data-panel="2" hidden aria-labelledby="cd-s2-h">
       <div class="cd-panel-head">
         <p class="cd-kicker">Step 2 of 3</p>
-        <h3 id="cd-s2-h" class="cd-h" tabindex="-1">Your Request Has Been Received.</h3>
+        <h3 id="cd-s2-h" class="cd-h" tabindex="-1">Your request has been received.</h3>
         <p>Here's what just happened behind the scenes.</p>
       </div>
       <div class="cd-two">
@@ -191,7 +193,7 @@
 
       <div class="cd-recep" aria-labelledby="cd-recep-h">
         <div>
-          <h4 id="cd-recep-h">What Happens When You're Too Busy to Answer?</h4>
+          <h4 id="cd-recep-h">What happens when you're too busy to answer?</h4>
           <p>Imagine you're on a job site and a potential customer calls. Experience how an AI receptionist can answer, gather project details, and help capture the opportunity.</p>
           <p class="cd-ask">Try asking:</p>
           <ul class="cd-asks">
@@ -212,7 +214,7 @@
     <div class="cd-panel" data-panel="3" hidden aria-labelledby="cd-s3-h">
       <div class="cd-panel-head">
         <p class="cd-kicker">Step 3 of 3</p>
-        <h3 id="cd-s3-h" class="cd-h" tabindex="-1">Here's What the Business Owner Sees.</h3>
+        <h3 id="cd-s3-h" class="cd-h" tabindex="-1">Here's what the business owner sees.</h3>
         <p>Every inquiry becomes a card on a simple pipeline. As the job moves forward, the card moves with it.</p>
       </div>
       <div class="cd-pipe-wrap" tabindex="0" aria-label="Example pipeline, scrollable">
@@ -259,7 +261,7 @@
       <p class="cd-pipe-note">Only the New Lead card reflects your demo request. The other stages are illustrative: the demo never moves a real opportunity forward, and Quote Sent only happens when a business actually sends an estimate.</p>
 
       <div class="cd-system">
-        <h4>One System. From First Inquiry to Finished Job.</h4>
+        <h4>One system, from first inquiry to finished job.</h4>
         <ul class="cd-caps">
           <li><span class="offer-ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 9h8"/><path d="M8 13h6"/><path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"/></svg></span><div><strong>Instant inquiry acknowledgment</strong><p>Every form request gets a reply right away, so the customer knows they were heard.</p></div></li>
           <li><span class="offer-ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/></svg></span><div><strong>Missed-call recovery</strong><p>Missed a call on a job site? The caller gets a text back so the conversation keeps going.</p></div></li>
@@ -268,7 +270,7 @@
           <li><span class="offer-ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg></span><div><strong>Quote follow-up</strong><p>Once you send a quote, polite follow-ups keep it from going quiet.</p></div></li>
           <li><span class="offer-ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></svg></span><div><strong>Review and referral requests</strong><p>When the job is done, the customer is asked for a review and a referral.</p></div></li>
         </ul>
-        <p class="cd-pipe-note">These are capabilities of the Contractor Core system, not a list of everything that ran during this short demo.</p>
+        <p class="cd-pipe-note">These are capabilities of IW Operate, not a list of everything that ran during this short demo.</p>
       </div>
     </div>
 
@@ -284,12 +286,32 @@
 <section class="section cta-band cd-convert" aria-labelledby="cd-conv-title">
   <div class="wrap cta-band-inner">
     <div>
-      <h2 id="cd-conv-title">Imagine This Running for Your Business.</h2>
+      <h2 id="cd-conv-title">Imagine this running for your business.</h2>
       <p>Your website captures the inquiry. Your system follows up. Your pipeline keeps everything organized. You focus on getting the job done.</p>
     </div>
     <div class="cta-band-actions">
-      <a class="btn btn-primary" href="/contact/#book" data-cd-book>Book Your IronWeb Consultation <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg></a>
-      <a class="btn btn-outline" href="/services/">Explore IronWeb Services</a>
+      <a class="btn btn-primary" href="#book" data-cd-book>Book a call with Colin <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg></a>
+      <a class="btn btn-outline" href="/operate/">See IW Operate</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="book" aria-labelledby="book-title">
+  <div class="wrap contact-grid">
+    <div class="contact-intro">
+      <p class="label"><span class="slash" aria-hidden="true">/</span> Book a call</p>
+      <h2 id="book-title" class="h-sub">See it on your own business.</h2>
+      <p>Pick a time for a walkthrough. Colin shows you how the system would handle your calls, leads and reviews.</p>
+      <ul class="contact-lines">
+      <li><a href="tel:+17744867776"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/></svg> (774) 486-7776</a></li>
+      <li><a href="mailto:colin@ironwebdigital.com"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/></svg> colin@ironwebdigital.com</a></li>
+    </ul>
+    </div>
+    <div class="panel">
+      <div class="booking">
+      <iframe class="booking-frame" src="https://api.leadconnectorhq.com/widget/bookings/ironweb-contractor-demo" title="Book a call with IronWeb Digital" loading="lazy"></iframe>
+      <p class="booking-fallback">Calendar not loading? <a href="https://api.leadconnectorhq.com/widget/bookings/ironweb-contractor-demo" target="_blank" rel="noopener">Open the booking page <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></a></p>
+    </div>
     </div>
   </div>
 </section>
@@ -298,12 +320,12 @@
   <div class="wrap footer-grid">
     <div class="footer-brand">
       <a class="brand" href="/" aria-label="IronWeb Digital home"><img src="/assets/img/ironweb-logo.svg" alt="IronWeb Digital" width="680" height="160" loading="lazy"></a>
-      <p class="footer-tagline">Systems that Stick</p>
-      <p>Automations and websites for contractors, real estate and local businesses. Based in Swansea, Massachusetts. Digital services nationwide.</p>
+      <p class="footer-tagline">Systems That Stick.</p>
+      <p>Websites, ads and automations for contractors and trades. Based in Swansea, Massachusetts.</p>
     </div>
     <nav aria-label="Footer: services">
       <p class="footer-h">Services</p>
-      <ul><li><a href="/services/">All services</a></li><li><a href="/build/">Websites</a></li><li><a href="/automations/">Automations</a></li><li><a href="/automations/bundles/">Bundles</a></li><li><a href="/growth/">Growth</a></li><li><a href="/contractor-demo/">Contractor demo</a></li></ul>
+      <ul><li><a href="/build/">IW Build</a></li><li><a href="/grow/">IW Grow</a></li><li><a href="/operate/">IW Operate</a></li><li><a href="/demo/">Demo</a></li></ul>
     </nav>
     <nav aria-label="Footer: company">
       <p class="footer-h">Company</p>
@@ -322,6 +344,6 @@
     <p><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></p>
   </div>
 </footer>
-<script src="/assets/js/lead-form.js?v=27fb750cf7" defer></script>
+<script src="/assets/js/lead-form.js?v=68a9ea9a0e" defer></script>
 </body>
 </html>

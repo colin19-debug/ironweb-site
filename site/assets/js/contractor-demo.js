@@ -54,8 +54,7 @@
       banner.innerHTML = '<strong>Live demo.</strong> Your request goes into a demo system, kept separate from real customer work. Steps we can confirm are marked Confirmed; anything still being handled by the automation is marked Pending.';
       banner.classList.add('is-live');
     }
-    // External calendar opens in a new tab so the visitor keeps their place in the demo.
-    if (c.bookingUrl) document.querySelectorAll('[data-cd-book]').forEach(function (a) { a.href = c.bookingUrl; a.target = '_blank'; a.rel = 'noopener'; });
+    // The calendar is embedded on this page (#book), so the booking button stays an in-page link (v3).
     var box = root.querySelector('[data-cd-recep]');
     if (c.receptionist && c.receptionist.enabled && box) {
       box.innerHTML =

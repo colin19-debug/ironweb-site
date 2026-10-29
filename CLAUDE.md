@@ -4,29 +4,37 @@ Read `CLAUDE-CODE-HANDOFF.md` (approved brief), `README.md` and `docs/INTEGRATIO
 `ironweb-ghl-playbook.md` is background for the CRM wiring; where it conflicts with the handoff, the handoff wins.
 
 ## Hard rules
-- Offer architecture (2026-10-16, ironweb-claude-code-prompt-2026-10-16.md) leads the homepage: the WEDGE is $97/month
-  per automation stage with NO setup fee; the LADDER is a 3-stage journey (Get Found / Never Miss an Opportunity /
-  Track Everything), never a pick-and-choose menu; BUNDLES are the "Most Popular" express option (Contractor
-  $297/mo, Real Estate $397/mo, $497 setup waived with 6 months prepaid; setup fee applies to bundles ONLY);
-  WEBSITES are secondary: $600 one-time handoff, or "$600 value, included" with either bundle (never "free website").
-- Hero: "Systems that Stick" (H1, also in the footer), kicker "Never miss another opportunity.", primary CTA
-  "Text DEMO to (774) 486-7776" (sms: link), secondary "Or we'll text you" -> #talk. Keep the animated video hero.
-- No em dashes anywhere in copy (scripts/check.mjs asserts it on the homepage).
+- v3 (2026-10-28) is the source of truth: docs/IRONWEB-V3-SPEC.md. Contractors and trades only (no real estate).
+  Published products ONLY: IW Build $600 one-time + $97/month; IW Grow $597/month + ad spend; IW Operate $297/month
+  (managed Operate "pricing on request", no number). NOT public: the $900 combined package, content shoots, AI agent
+  claims. All Oct 16 offers (stage ladder, bundles, $497 setup) are gone.
+- Hero: "Systems That Stick." (H1, also in footer), kicker "Never miss another opportunity.", primary (red)
+  "Request your free audit" -> /contact/#audit, secondary "See how the system works" -> /demo/. Keep the video hero.
+- Menu: Home, Portfolio, Services (IW Build, IW Grow, IW Operate), Demo, About, Contact. One primary action per section.
+- Audit form (intent `audit`): tag "website lead" (+ website-audit-request), SMS consent OPTIONAL, opportunity in the
+  "Website Leads" pipeline, first stage (looked up by name). Build page preview form (intent `preview`): tag needs-demo.
+  Booking calendar embedded on /demo/ and /contact/ (frame-src allows api.leadconnectorhq.com).
+- No em dashes anywhere in copy (scripts/check.mjs asserts it on every page).
 - Hero background = animated circuit video (see README); headline, nav and buttons stay real HTML.
-- Prices live only in `src/data.mjs` (PRICES, LADDER, BUNDLES). Always state one-time vs. monthly.
-- Never name GHL/GoHighLevel, Kling, Claude or Netlify in public copy (`scripts/check.mjs` enforces this).
-- No invented reviews, results, credentials, team, social links, or drone/professional camera services.
+- Prices live only in `src/data.mjs` (PRODUCTS). Always state one-time vs. monthly.
+- Never name GHL/GoHighLevel/LeadConnector, Kling, Claude or Netlify in public copy (`scripts/check.mjs` enforces this).
+- No invented reviews, results, credentials, team, social links, or camera/content-shoot services.
   Testimonials with `placeholder: true` never render publicly (preview: SHOW_PLACEHOLDERS=1 node scripts/build.mjs).
 - Forms: success only on CRM acceptance (`200 {ok:true}`); stub/failed states must say nothing was sent.
 - Tests: run the dev server on a free port and pass BASE, e.g. `PORT=3007 node serve.mjs` then
   `BASE=http://localhost:3007 node scripts/check.mjs` (port 3001 may be used by other projects). Restart the server
   between back-to-back suite runs (the form rate limiter is in-memory).
 - Contractor demo: never enable CONTRACTOR_DEMO_LIVE / _TRIGGER_WORKFLOWS / receptionist without Colin's approval;
-  tests: `node tests/contractor-demo-test.mjs`.
+  tests: `node tests/contractor-demo-test.mjs`, `node tests/lead-test.mjs`. Deploy with
+  `--site 59c7e19d-6809-4e72-ace9-1d8c1c552921` only after the browser suite passes.
 - Edit `src/`, then `node scripts/build.mjs`. Don't hand-edit generated HTML in `site/`.
 - Don't deploy to production without Colin's explicit instruction.
 
 ## Decision log (newest first)
+- 2026-10-28: v3 built on the existing engine (not deployed). Pages: / /build/ /grow/ /operate/ /demo/ /portfolio/
+  /about/ /contact/ (+ legal). Removed /services/ /automations/ /automations/bundles/ /growth/ /contractor-demo/ with
+  301s. Old intents speed/inquiry/demo/agentic removed. Homepage industry demo moved to /build/ (trades only).
+  Homes by Heroux -> homesbyheroux.com. Ocean Groove on Portfolio only. Tests: lead 15, demo 25, browser 265, QA pass.
 - 2026-10-28: Project is now a git repo (branch main, baseline bbab09b = live deploy 6ae1554d). Commit after each
   cleanup stage; LF line endings (core.autocrlf false). Site audit + staged cleanup plan: docs/SITE-AUDIT-2026-10-28.md.
 - 2026-10-27: AI receptionist enabled on the demo (Colin set CONTRACTOR_DEMO_RECEPTIONIST_ENABLED=true, NUMBER

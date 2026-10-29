@@ -3,20 +3,23 @@
 //   GHL_API_KEY             Private Integration token (Netlify env var, secret, Production only).
 //                           GHL_TOKEN is still accepted as a fallback name.
 //   GHL_LOCATION_ID         Sub-account Location ID
-//   GHL_PIPELINE_ID         Optional. Pipeline for website inquiries
-//   GHL_PIPELINE_STAGE_ID   Optional. Stage for new website inquiries (e.g. "New Inquiry")
+//   GHL_PIPELINE_ID         Optional. Overrides the pipeline lookup by name (FORMS[intent].opportunity)
+//   GHL_PIPELINE_STAGE_ID   Optional, with GHL_PIPELINE_ID. Stage for new website leads
 //   GHL_API_VERSION         Optional. Version header, defaults to "v3" (verified live in the Saltmarsh demo)
 //
 // Per lead: upsert contact (matched by email/phone, so repeat inquiries and later bookings reuse
 // the same contact) → append tags (the upsert's tags field would overwrite) → add a note
-// → upsert one open opportunity per contact in the pipeline (no duplicates).
+// → one open opportunity per contact in the form's pipeline (looked up by name, first stage; no duplicates).
 import { FORMS, CUSTOM_FIELDS } from './forms-config.mjs';
 
 const BASE = 'https://services.leadconnectorhq.com';
 
 const apiKey = () => process.env.GHL_API_KEY || process.env.GHL_TOKEN;
 export const ghlConfigured = () => Boolean(apiKey() && process.env.GHL_LOCATION_ID);
-const pipelineConfigured = () => Boolean(process.env.GHL_PIPELINE_ID && process.env.GHL_PIPELINE_STAGE_ID);
+
+// Opportunity endpoints use the documented 2021-07-28 contract; under 'v3' the search endpoint rejects
+// location_id / pipeline_id / contact_id with a 422 (first live demo test, 2026-10-27).
+export const OPP_VERSION = '2021-07-28';
 
 // `version` overrides the Version header for endpoints whose parameters follow a specific API version.
 async function call(method, path, body, version) {
@@ -45,8 +48,8 @@ async function call(method, path, body, version) {
 
 export function tagsFor(lead) {
   const form = FORMS[lead.intent] || {};
-  const tags = [form.tag, 'source-website'];
-  if (lead.answers.service) tags.push(`interest-${lead.answers.service.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
+  const tags = [form.tag, ...(form.extraTags || []), 'source-website'];
+  if (lead.answers.trade) tags.push(`trade-${lead.answers.trade.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
   if (lead.consent?.agreed) tags.push('sms-consent');
   return [...new Set(tags.filter(Boolean))];
 }
@@ -66,6 +69,36 @@ export function noteFor(lead) {
   const attr = Object.entries(lead.attribution || {}).filter(([, v]) => v).map(([k, v]) => `${k}=${v}`);
   if (attr.length) lines.push(`Attribution: ${attr.join(', ')}`);
   return lines.join('\n');
+}
+
+// Pipeline + first stage by pipeline name, looked up once per function instance.
+// GHL_PIPELINE_ID + GHL_PIPELINE_STAGE_ID skip the lookup.
+const pipelineCache = new Map();
+export const resetPipelineCache = () => pipelineCache.clear();
+async function pipelineStage(pipelineName) {
+  if (process.env.GHL_PIPELINE_ID && process.env.GHL_PIPELINE_STAGE_ID) {
+    return { pipelineId: process.env.GHL_PIPELINE_ID, stageId: process.env.GHL_PIPELINE_STAGE_ID };
+  }
+  if (pipelineCache.has(pipelineName)) return pipelineCache.get(pipelineName);
+  const data = await call('GET', `/opportunities/pipelines?locationId=${encodeURIComponent(process.env.GHL_LOCATION_ID)}`, undefined, OPP_VERSION);
+  const want = pipelineName.trim().toLowerCase();
+  const p = (data?.pipelines || []).find((x) => String(x.name || '').trim().toLowerCase() === want);
+  const first = p && [...(p.stages || [])].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))[0];
+  if (!first) throw new Error(`pipeline "${pipelineName}" or its first stage not found`);
+  const found = { pipelineId: p.id, stageId: first.id };
+  pipelineCache.set(pipelineName, found);
+  return found;
+}
+
+// One open opportunity per contact in the pipeline: reuse an open one, else create it in the first stage.
+async function ensureOpportunity(contactId, name, pipelineName) {
+  const { pipelineId, stageId } = await pipelineStage(pipelineName);
+  const loc = process.env.GHL_LOCATION_ID;
+  const q = new URLSearchParams({ location_id: loc, pipeline_id: pipelineId, contact_id: contactId, status: 'open' });
+  const found = await call('GET', `/opportunities/search?${q}`, undefined, OPP_VERSION);
+  if ((found?.opportunities || []).some((o) => o.pipelineId === pipelineId)) return 'existing';
+  await call('POST', '/opportunities/', { locationId: loc, pipelineId, pipelineStageId: stageId, contactId, name, status: 'open' }, OPP_VERSION);
+  return 'created';
 }
 
 export async function sendToGHL(lead) {
@@ -100,24 +133,16 @@ export async function sendToGHL(lead) {
   await call('POST', `/contacts/${contactId}/tags`, { tags });
   await call('POST', `/contacts/${contactId}/notes`, { body: noteFor(lead) });
 
-  // Opportunity: best-effort. The contact, tags and note above are what trigger Colin's
-  // notification workflow, so an opportunity error is logged but doesn't fail the lead.
+  // Opportunity: best-effort. The contact, tags and note above are what trigger Colin's text
+  // workflow, so an opportunity error is logged but doesn't fail the lead.
   let opportunity = 'skipped';
-  if (form.opportunity !== false && pipelineConfigured()) {
+  if (form.opportunity) {
     try {
-      const name = [lead.firstName, lead.lastName].filter(Boolean).join(' ') + (lead.answers.businessName ? ` – ${lead.answers.businessName}` : ' – Website');
-      await call('POST', '/opportunities/upsert', {
-        locationId: process.env.GHL_LOCATION_ID,
-        pipelineId: process.env.GHL_PIPELINE_ID,
-        pipelineStageId: process.env.GHL_PIPELINE_STAGE_ID,
-        contactId,
-        name,
-        status: 'open',
-      });
-      opportunity = 'upserted';
+      const name = [lead.firstName, lead.lastName].filter(Boolean).join(' ') + (lead.answers.businessName ? ` - ${lead.answers.businessName}` : ' - Website');
+      opportunity = await ensureOpportunity(contactId, name, form.opportunity);
     } catch (err) {
       opportunity = 'failed';
-      console.error(`[crm] opportunity upsert failed for contact ${contactId}: ${err.message} ${JSON.stringify(err.data || {})}`);
+      console.error(`[crm] opportunity failed for contact ${contactId}: ${err.message} ${JSON.stringify(err.data || {})}`);
     }
   }
   return { contactId, isNew: Boolean(upserted?.new), tags, opportunity };

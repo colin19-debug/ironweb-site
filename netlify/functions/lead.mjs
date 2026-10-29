@@ -5,7 +5,7 @@
 //   429 { ok: false, code: 'rate_limited' }
 //   502 { ok: false, code: 'crm_failed' }    CRM rejected or unreachable; full lead logged for manual re-entry
 //   503 { ok: false, code: 'not_connected' } CRM env vars missing (stub mode: logged only, nothing sent)
-import { FORMS } from '../lib/forms-config.mjs';
+import { FORMS, REQUIRED_MESSAGES } from '../lib/forms-config.mjs';
 import { ghlConfigured, sendToGHL, tagsFor } from '../lib/ghl.mjs';
 
 // Domain labels must be real (no trailing or doubled dots): the CRM rejects anything looser with a 422.
@@ -40,6 +40,7 @@ export function validate(b) {
   if (form.phone === 'required' && !b.phone) errors.phone = 'Enter your mobile number.';
   else if (b.phone && !PHONE_RE.test(str(b.phone, 20))) errors.phone = 'Enter a 10-digit US phone number.';
   const a = b.answers && typeof b.answers === 'object' ? b.answers : {};
+  for (const k of form.required || []) if (!str(a[k], 300)) errors[k] = REQUIRED_MESSAGES[k] || 'This field is required.';
   Object.entries(form.choices || {}).forEach(([k, allowed]) => {
     if (a[k] && !allowed.includes(a[k])) errors[k] = 'Choose one of the options.';
   });

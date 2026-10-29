@@ -1,5 +1,6 @@
 // Single source of truth for business facts, pricing, portfolio and FAQ.
 // Edit here, then run `node scripts/build.mjs` to regenerate /site.
+// v3 (2026-10-28): contractors and trades only; three products. Spec: docs/IRONWEB-V3-SPEC.md.
 
 export const SITE = {
   name: 'IronWeb Digital',
@@ -15,19 +16,13 @@ export const SITE = {
   founder: 'Colin Sullivan',
 };
 
-// Public booking page for discovery calls (the business platform's calendar link).
-// Not supplied yet. While empty, every "Book a Call" lands on /contact/#book, which
-// says plainly that online booking isn't connected and offers phone, email and the form.
-// Paste the public calendar URL here (it is not a secret), rebuild, and add its host to
-// frame-src in netlify.toml.
+// Public calendar for consultation calls (not a secret). Embedded on /demo/ and /contact/; its host is
+// allowed in frame-src in netlify.toml.
 export const BOOKING = {
-  url: '',
+  url: 'https://api.leadconnectorhq.com/widget/bookings/ironweb-contractor-demo',
   embed: true,
 };
 
-// Optional hero video. Leave `sources` empty to use the still only.
-// Example: sources: [{ src: '/assets/video/hero-1280.webm', type: 'video/webm' },
-//                    { src: '/assets/video/hero-1280.mp4', type: 'video/mp4' }]
 // Animated hero (2026-10-12): brand_assets/Animatedcircuit.mp4, re-encoded without audio by ffmpeg
 // (see README). Phones get a chip-centred crop. Posters are the video's first frame, so the swap from
 // still to video is seamless. List MP4 first (plays everywhere); WebM is the smaller fallback.
@@ -42,153 +37,88 @@ export const HERO_VIDEO = {
   posterMobile: '/assets/img/hero-circuit-poster-mobile-640.jpg',
 };
 
-// Website-first navigation (2026-10-10). Services lists Websites first; Automations and Bundles
-// are the optional extension; Growth (content/ads) stays available but secondary.
+// The main action everywhere: request the free audit (Contact page form). The demo is the secondary action.
+export const AUDIT_HREF = '/contact/#audit';
+export const AUDIT_CTA = 'Request your free audit';
+export const DEMO_HREF = '/demo/';
+export const DEMO_CTA = 'See how the system works';
+
 export const NAV = [
+  { label: 'Home', href: '/' },
   { label: 'Portfolio', href: '/portfolio/' },
   {
     label: 'Services',
-    href: '/services/',
     children: [
-      { label: 'All services', href: '/services/', note: 'How it all fits together' },
-      { label: 'Websites', href: '/build/', note: 'From $600 one-time' },
-      { label: 'Automations', href: '/automations/', note: 'Start at $97/month' },
-      { label: 'Bundles', href: '/automations/bundles/', note: 'Automation packages' },
-      { label: 'Growth', href: '/growth/', note: 'Content and ads' },
-      { label: 'Contractor demo', href: '/contractor-demo/', note: 'Try the system yourself' },
+      { label: 'IW Build', href: '/build/', note: 'Websites, $600 + $97/month' },
+      { label: 'IW Grow', href: '/grow/', note: 'Social, ads and leads, $597/month' },
+      { label: 'IW Operate', href: '/operate/', note: 'Automations, $297/month' },
     ],
   },
+  { label: 'Demo', href: '/demo/' },
   { label: 'About', href: '/about/' },
+  { label: 'Contact', href: '/contact/' },
 ];
 
-// Pricing. `cadence` makes one-time vs recurring explicit everywhere a price is shown.
-export const PRICES = {
-  compact: { name: 'Compact Build', amount: '$600', cadence: 'one-time', monthly: null },
-  build: { name: 'IronWeb Build', amount: '$1,500', cadence: 'setup', monthly: '$100/month' },
-  addon: { name: 'Landing page or simple funnel', amount: '$97', cadence: 'one-time, each', monthly: null },
-  growth: { name: 'IronWeb Growth', amount: '$597/month', cadence: 'monthly', monthly: null },
-  adsOne: { name: 'Paid Ads, one platform', amount: '$750/month', cadence: 'plus ad spend', monthly: null },
-  adsMore: { name: 'Paid Ads, expanded', amount: 'From $1,000/month', cadence: 'plus ad spend', monthly: null },
-  operate: { name: 'IronWeb Operate', amount: '$750', cadence: 'setup', monthly: '$297/month' },
-  customOperate: { name: 'Custom Operate', amount: 'Up to $1,000', cadence: 'setup', monthly: '$350/month' },
-  // Starting price for individual automations, supplied by Colin on 2026-10-10. Per-automation prices are
-  // not confirmed, so the site only states this starting point; each quote lists the actual price.
-  automationsFrom: '$97/month',
-  // ---- Offer architecture (Colin, 2026-10-16) ----
-  // The wedge: each automation stage is $97/month with NO setup fee. Setup fees apply to bundles only.
-  stage: '$97/month',
-  bundleSetup: '$497',
-  bundleSetupWaiver: 'waived with 6 months prepaid',
-  contractorBundle: '$297/month',
-  realEstateBundle: '$397/month',
-  website: '$600', // one-time standalone handoff; "$600 value, included" with either bundle
-};
-
-// The automation ladder: a journey, not a menu. Start where you are, add as you grow.
-export const LADDER = [
-  {
-    key: 'get-found',
-    name: 'Get Found',
-    outcome: 'Show up on Google and build the review count that drives local search.',
-    items: [
-      'Google Business Profile set up and optimized',
-      'Yelp claimed and cleaned up',
-      'Automated review requests after every job',
-      'Automated responses to new reviews',
-      'Monthly ranking report',
-    ],
-    note: 'You see it working every month.',
-  },
-  {
-    key: 'never-miss',
-    name: 'Never Miss an Opportunity',
-    outcome: 'Every call and inquiry gets an answer, even when you can\'t pick up.',
-    items: [
-      'Missed-call text-back in under a minute',
-      'Instant replies to website form inquiries',
-      'Scheduled follow-up for the "not yet" leads',
-    ],
-    note: 'The lead hears from you before they call the next name.',
-  },
-  {
-    key: 'track-everything',
-    name: 'Track Everything',
-    outcome: 'Know where every customer stands, without a spreadsheet.',
-    items: [
-      'A simple customer pipeline',
-      'Stages that update automatically as leads move',
-      'Nothing slips through the cracks',
-    ],
-    note: 'One place to see every open opportunity.',
-  },
-];
-
-// Bundles: the express option for buyers who want it all.
-export const BUNDLES = [
-  {
-    key: 'contractor',
-    name: 'Contractor Bundle',
-    price: '$297/month',
-    pitch: 'We automate your customer communications and follow-ups so you spend less time managing your business and more time running it.',
-    functions: [
-      'Missed-call text-back',
-      'Speed to lead from website forms',
-      'Simple customer pipeline with automated stage changes',
-      'Estimate follow-up sequence',
-      'Review request after job completion',
-    ],
-    goals: ['Capture organized customers', 'Reduce repetitive admin work', 'Protect existing revenue and reputation'],
-  },
-  {
-    key: 'real-estate',
-    name: 'Real Estate Bundle',
-    price: '$397/month',
-    pitch: 'We automate your lead responses, qualifications, and follow-ups so you spend less time chasing leads and managing your CRM and more time building relationships and closing deals.',
-    functions: [
-      'Speed to lead',
-      'AI lead qualification: needs, timeline, location, budget',
-      'Appointment booking: buyer consultations, listing appointments, showings',
-      'CRM automation: organizes leads, updates contact info, moves opportunities through the pipeline',
-      'Long-term nurture campaigns',
-      'Database reactivation',
-    ],
-    goals: ['Capture and qualify leads', 'Reduce repetitive admin work', 'Convert more existing opportunities'],
-  },
-];
-
-// Objection-handling FAQ (homepage). Four questions max.
-export const OBJECTION_FAQ = [
-  { q: "I don't have time to learn new software.", a: "You don't have to. Colin sets it up and runs it. You keep doing the work; the system handles the follow-up." },
-  { q: 'What if it texts the wrong thing?', a: "It won't say anything you haven't approved. You sign off on every message before it goes live, and you can change it any time. You're always in control." },
-  { q: "I'm too small for this.", a: "That's exactly who it's for. If you're the one answering the phone, doing the work and sending the invoices, this is the help you don't have time to hire." },
-  { q: 'What happens if I cancel?', a: 'You keep your data: your contacts and your customer list go with you. No contracts that hold you hostage.' },
-];
-
-export const SERVICES = [
+// The only prices on the site. Always say one-time vs monthly.
+export const PRODUCTS = [
   {
     key: 'build',
-    name: 'Build',
+    name: 'IW Build',
     href: '/build/',
-    line: 'A website that explains what you do and makes the next step obvious.',
-    priceLabel: 'From $600 one-time',
-    priceNote: 'or $1,500 setup + $100/month managed',
+    what: 'Websites, landing pages, funnels and SEO foundations.',
+    line: 'A site that makes your business look as good as your work, and makes calling you the obvious next step.',
+    price: '$97',
+    cadence: 'per month',
+    extra: '+ $600 one-time build',
+    includes: ['Website built for your trade and your towns', 'Hosting, updates and upkeep', 'Instant text reply to every website inquiry', 'Landing pages and funnels when you run a campaign'],
   },
   {
-    key: 'growth',
-    name: 'Growth',
-    href: '/growth/',
-    line: 'Three original posts a week, written, scheduled and adapted to your channels.',
-    priceLabel: '$597/month',
-    priceNote: 'Paid ads from $750/month + ad spend',
+    key: 'grow',
+    name: 'IW Grow',
+    href: '/grow/',
+    what: 'Social media management, paid ads, lead generation and content.',
+    line: 'Stay in front of homeowners in your area without writing posts at night or guessing at ads.',
+    price: '$597',
+    cadence: 'per month',
+    extra: '+ ad spend, paid to the ad platform',
+    includes: ['Three original posts a week, written and scheduled', 'Paid ad campaigns set up and managed', 'Lead forms that hand off to instant follow-up', 'Nothing posts without your approval'],
   },
   {
     key: 'operate',
-    name: 'Automations',
-    href: '/automations/',
-    line: 'Missed-call text-back, fast replies and follow-up that keeps running.',
-    priceLabel: '$750 setup + $297/month',
-    priceNote: 'Messaging and usage billed separately',
+    name: 'IW Operate',
+    href: '/operate/',
+    what: 'Missed-call text-back, instant lead response, AI reception, review requests, CRM and follow-up.',
+    line: 'The front office runs while you are on the job: calls answered, leads followed up, reviews requested.',
+    price: '$297',
+    cadence: 'per month',
+    extra: 'Set up for you, preloaded for contractors',
+    includes: ['Missed-call text-back', 'Instant reply to new leads', 'AI receptionist that answers and takes details', 'Review requests after every job', 'A simple pipeline and follow-up for every lead'],
   },
+];
+
+// What the free audit checks (matches the report Colin runs).
+export const AUDIT_POINTS = [
+  { h: 'Google Business Profile', p: 'Is it complete, verified and pointing to the right website and phone number?' },
+  { h: 'Listings', p: 'Your name, address and phone checked across about 30 directories. Mismatches cost you calls.' },
+  { h: 'Reviews', p: 'How many you have, how recent they are, and whether anyone is replying to them.' },
+  { h: 'Website', p: 'Is there one, is it linked, does it work on a phone, and is it fast enough for Google?' },
+  { h: 'Local map ranking', p: 'Where you show up on Google Maps for your trade across your service area, next to the competitors beating you.' },
+  { h: 'Calls and texts', p: 'Can customers text you, and what happens when you miss a call?' },
+];
+
+export const PROCESS = [
+  { name: 'Audit', text: 'A free report on how your business shows up online and where calls and leads slip through.' },
+  { name: 'Plan', text: 'We walk through it together and pick the fixes worth doing first. No package you don\'t need.' },
+  { name: 'Build', text: 'Colin sets it up: the website, the automations, the ads. You keep working.' },
+  { name: 'Grow', text: 'It runs every day. Add the next piece when the first one is paying for itself.' },
+];
+
+export const HOME_FAQ = [
+  { q: 'What does the free audit cost?', a: 'Nothing. You get a report on your Google profile, listings, reviews, website and local map ranking, and Colin walks you through what to fix first. No obligation.' },
+  { q: "I don't have time to learn new software.", a: 'You don\'t have to learn much. Colin sets everything up preloaded for contractors and walks you through it. Most of it runs without you touching it.' },
+  { q: 'What if it texts the wrong thing?', a: "It won't say anything you haven't approved. You sign off on every message before it goes live, and you can change it any time." },
+  { q: "I'm too small for this.", a: "That's who it's for. If you're the one answering the phone, doing the work and sending the invoices, this is the help you don't have time to hire." },
+  { q: 'What happens if I cancel?', a: 'You keep your contacts and your customer list. No contracts that hold you hostage.' },
 ];
 
 export const WORK = [
@@ -209,68 +139,71 @@ export const WORK = [
     desc: 'A service site for a Fall River property maintenance company serving landlords, investors and homeowners. Turnovers, painting, repairs and cleanouts, with call and estimate buttons on every screen.',
   },
   {
-    // Live on Netlify now; switch url/host to https://www.homesbyheroux.com/ once his domain is moved over.
     key: 'heroux',
     name: 'Homes by Heroux',
-    url: 'https://homes-by-heroux.netlify.app/',
-    host: 'homesbyheroux.com', // display only; keeps "Netlify" out of public copy
+    url: 'https://homesbyheroux.com/',
+    host: 'homesbyheroux.com',
     kind: 'Drywall, paint and remodeling',
     desc: 'A site for a Somerset drywall and interior painting specialist serving Bristol County and the Providence area. Services and why-us up front, a project gallery, and call and free-quote buttons on every screen.',
   },
   {
-    // Portfolio page only (homepage shows the business clients). Colin's pick, 2026-10-11.
+    // Portfolio page only: everywhere else stays contractor sites (Colin, 2026-10-28).
     key: 'oceangroove',
     name: 'Ocean Groove',
     url: 'https://oceangroovetheband.com/',
     host: 'oceangroovetheband.com',
     kind: 'Seven-piece cover band',
     desc: 'A site for a Swansea funk, fusion and classic rock band. Set list, upcoming shows, gallery and a booking path for venues, weddings and private events.',
-    homepage: false,
+    trade: false,
   },
 ];
 
-// ---------- Speed-to-lead homepage (2026-10-11) ----------
-// Every bracketed value below is a placeholder Colin must fill before deploying.
-export const PROOF_THIRD_CLIENT = 'Homes by Heroux';
-// Real testimonials only. Leave `quote` empty until a client approves wording; the homepage block
-// stays hidden until at least one quote is filled in.
-// Testimonials / results (2026-10-16). One placeholder entry shows the shape. Entries with `placeholder: true`
-// never render on the public site; set SHOW_PLACEHOLDERS=1 when building to preview the layout.
-// To publish a real one: fill quote/name/business (and result if you have a real number), remove `placeholder`.
+// Real testimonials only. Entries with `placeholder: true` never render on the public site; set
+// SHOW_PLACEHOLDERS=1 when building to preview the layout. To publish one: fill it in, remove `placeholder`.
 export const TESTIMONIALS = [
   {
     placeholder: true,
     quote: 'Client quote goes here, in their own words.',
     name: 'Client name',
     business: 'Business name',
-    result: 'X missed calls caught in the first month',
+    result: '',
   },
 ];
-// 60-second screen recording of the real Saltmarsh demo (lead comes in, gets a text).
-// Put the files in site/assets/video/ and fill these in; while `src` is empty a labeled slot shows instead.
-export const DEMO_VIDEO = {
-  src: '', // e.g. '/assets/video/saltmarsh-speed-to-lead.mp4'
-  poster: '', // e.g. '/assets/img/saltmarsh-demo-poster.jpg'
-};
-// Headshot for the "Text me" section. Leave empty to show a labeled slot.
+// About page photo. Leave src empty and the photo block isn't rendered.
 export const HEADSHOT = { src: '', alt: 'Colin Sullivan, founder of IronWeb Digital' };
-export const SPEED_BUSINESS_TYPES = ['Contractor / trade', 'Real estate', 'Other'];
 
-// ---------- Interactive demo (2026-10-10) ----------
-// "Explore the demo" = an on-page, clearly illustrative walkthrough of what a customer experiences.
-// The businesses are fictional examples; the inquiry is simulated in the browser and sends nothing.
+// Trades offered on the audit and preview forms (also the server-side allow-list).
+export const TRADES = [
+  'Roofing',
+  'Painting',
+  'Drywall',
+  'Carpentry',
+  'Landscaping',
+  'Concrete and site work',
+  'Plumbing',
+  'HVAC',
+  'Electrical',
+  'General contracting',
+  'Property maintenance',
+  'Other trade',
+];
+
+// ---------- Website demo (IW Build page) ----------
+// An on-page, clearly illustrative walkthrough of what a customer experiences on an IronWeb website.
+// The businesses are fictional; the inquiry is simulated in the browser and sends nothing.
 export const DEMO_JOURNEY = [
   { key: 'first', name: 'First impression', text: 'In a few seconds the visitor knows who you are, what you do and where you work, with one obvious next step.' },
-  { key: 'proof', name: 'Builds confidence', text: 'Services, examples of the work and how the job runs, laid out so a careful buyer finds answers without calling.' },
+  { key: 'proof', name: 'Builds confidence', text: 'Services, examples of the work and how the job runs, laid out so a careful homeowner finds answers without calling.' },
   { key: 'inquiry', name: 'Easy inquiry', text: 'A short form and a tap-to-call button, placed where people decide. Try the form in the example site.' },
-  { key: 'after', name: 'After they reach out', text: 'The inquiry lands with you with the details attached. Automations can reply instantly if you add them later.' },
+  { key: 'after', name: 'After they reach out', text: 'The inquiry lands with you with the details attached, and the customer gets a text back right away.' },
 ];
 
 // accent: mirrored in site.css (.dx-site[data-industry]) because the CSP forbids inline styles.
+// Keys are kept from the original three examples so the CSS accents still apply.
 export const DEMO_INDUSTRIES = [
   {
     key: 'trades',
-    tab: 'Trades',
+    tab: 'Roofing',
     biz: 'Example Roofing Co.',
     host: 'exampleroofing.co',
     accent: '#B94A12',
@@ -296,161 +229,93 @@ export const DEMO_INDUSTRIES = [
   },
   {
     key: 'realestate',
-    tab: 'Real estate',
-    biz: 'Example Realty Group',
-    host: 'examplerealty.co',
+    tab: 'Landscaping',
+    biz: 'Example Landscape Co.',
+    host: 'examplelandscape.co',
     accent: '#2E6FDB',
-    tagline: 'Buying and selling homes',
-    headline: 'Local agents who know the neighborhoods.',
-    sub: 'Buy, sell or find out what your home is worth, with an agent who answers.',
-    primary: 'Get a home valuation',
-    secondary: 'Talk to an agent',
-    badges: ['Buyer and seller representation', 'Local market reports', 'Same-day replies'],
-    proofTitle: 'How we help',
+    tagline: 'Lawns, plantings and hardscape',
+    headline: 'A yard you are proud to come home to.',
+    sub: 'Weekly lawn care, spring and fall cleanups, plantings and patios across your area.',
+    primary: 'Get a quote',
+    secondary: 'Call now',
+    badges: ['Fully insured', 'Weekly routes', 'Free quotes'],
+    proofTitle: 'What we do',
     proof: [
-      { h: 'Selling', p: 'Pricing, staging advice, marketing and negotiation, step by step.' },
-      { h: 'Buying', p: 'Showings, offers and inspections handled without the runaround.' },
-      { h: 'Home valuation', p: 'A local, agent-prepared estimate of what your home could sell for.' },
+      { h: 'Lawn care', p: 'Mowing, edging and fertilizing on a set weekly schedule.' },
+      { h: 'Cleanups', p: 'Spring and fall cleanups, mulch and bed edging.' },
+      { h: 'Hardscape', p: 'Patios, walkways and retaining walls, built to last.' },
     ],
-    galleryTitle: 'Featured listings',
-    steps: ['Valuation request', 'Agent call', 'Listing plan', 'On the market'],
-    formTitle: 'What is my home worth?',
-    formField: 'I am looking to',
-    formOptions: ['Sell', 'Buy', 'Buy and sell', 'Just curious'],
-    notify: 'New valuation request: looking to sell this spring.',
-    reply: 'Thanks for contacting Example Realty Group. An agent will reach out shortly about your home valuation.',
+    galleryTitle: 'Recent projects',
+    steps: ['Quote request', 'Site visit', 'Written quote', 'Work scheduled'],
+    formTitle: 'Get a free quote',
+    formField: 'What do you need?',
+    formOptions: ['Weekly lawn care', 'Cleanup', 'Patio or walkway', 'Not sure'],
+    notify: 'New quote request: spring cleanup and mulch, front and back.',
+    reply: 'Thanks for contacting Example Landscape Co. We got your request and will reach out to set up a visit.',
   },
   {
     key: 'local',
-    tab: 'Local services',
-    biz: 'Example Cleaning Co.',
-    host: 'examplecleaning.co',
+    tab: 'Painting',
+    biz: 'Example Painting Co.',
+    host: 'examplepainting.co',
     accent: '#0B7563',
-    tagline: 'Home and office cleaning',
-    headline: 'A cleaner home without the back-and-forth.',
-    sub: 'Recurring and one-time cleaning with clear pricing and simple booking.',
-    primary: 'Book a cleaning',
-    secondary: 'See pricing',
-    badges: ['Background-checked staff', 'Flexible scheduling', 'Supplies included'],
-    proofTitle: 'Services',
+    tagline: 'Interior and exterior painting',
+    headline: 'Clean lines, clean job sites, on schedule.',
+    sub: 'Interior and exterior painting for homes and rentals, with the prep done right.',
+    primary: 'Request an estimate',
+    secondary: 'See our work',
+    badges: ['Licensed and insured', 'Free estimates', 'Clean-up included'],
+    proofTitle: 'What we do',
     proof: [
-      { h: 'Recurring cleaning', p: 'Weekly or every other week, same team each visit.' },
-      { h: 'Deep cleaning', p: 'Top-to-bottom cleaning for move-ins, move-outs and seasons.' },
-      { h: 'Offices', p: 'After-hours cleaning that fits your schedule.' },
+      { h: 'Interiors', p: 'Walls, ceilings and trim, with furniture and floors protected.' },
+      { h: 'Exteriors', p: 'Scraping, priming and two coats, built for New England weather.' },
+      { h: 'Rentals', p: 'Fast turnovers between tenants for landlords and managers.' },
     ],
     galleryTitle: 'Before and after',
-    steps: ['Pick a service', 'Choose a time', 'Confirmation', 'Clean home'],
-    formTitle: 'Book a cleaning',
-    formField: 'Service',
-    formOptions: ['Recurring cleaning', 'Deep cleaning', 'Office cleaning', 'Not sure'],
-    notify: 'New booking request: deep clean, Saturday morning.',
-    reply: 'Thanks for booking with Example Cleaning Co. We will confirm your time shortly.',
+    steps: ['Estimate request', 'Walkthrough', 'Written quote', 'Job scheduled'],
+    formTitle: 'Request a free estimate',
+    formField: 'Project type',
+    formOptions: ['Interior', 'Exterior', 'Rental turnover', 'Not sure'],
+    notify: 'New estimate request: exterior repaint, colonial, this summer.',
+    reply: 'Thanks for reaching out to Example Painting Co. We got your request and will call you to set up an estimate.',
   },
 ];
 
-// What makes an IronWeb website valuable (home section 3).
-export const VALUE_POINTS = [
-  { h: 'Looks established from the first screen', p: 'Distinctive, professional design that makes your business look as capable as it is, not like a template with your logo on it.' },
-  { h: 'Works on the phone in their hand', p: 'Layouts, buttons and forms designed for mobile first, so the site is easy to use wherever a customer finds you.' },
-  { h: 'Says what you do, plainly', p: 'Clear messaging about your services, your area and why you, written so a visitor understands the offer in seconds.' },
-  { h: 'Makes the next step obvious', p: 'Tap-to-call, short forms and booking placed where people decide, so reaching you takes one move, not five.' },
-];
-
-// The free homepage preview (formerly "free demo", renamed 2026-10-10 so it isn't confused with the
-// interactive demo). Journey: request → Colin follows up personally → preview on a private link → you decide.
-export const PREVIEW_STEPS = [
-  { name: 'Tell us about your business.', text: 'Your name and email are enough to start. Add more detail if you like.' },
-  { name: 'Colin follows up personally.', text: 'A conversation about what you need. If it is a fit, Colin creates a homepage preview for your business.' },
-  { name: 'You decide whether to move forward.', text: 'Review the preview on a private link. If you like the direction, you get a clear quote.' },
-];
-
-export const PROCESS = [
-  { name: 'Talk about your website', text: 'Send a few details or book a call. Colin follows up personally to learn about your business and what the site needs to do.' },
-  { name: 'Free homepage preview', text: 'When it is a fit, a personalized first-stage homepage on a private link, so you can see the direction before you commit.' },
-  { name: 'Build and revisions', text: 'Once you go ahead, the full site, then two consolidated rounds of revisions and a final polish pass.' },
-  { name: 'Launch', text: 'Domain, forms and handoff checked, then live. Managed sites keep an hour of edits each month.' },
-];
-
-export const PREVIEW_FAQ = [
-  {
-    q: 'What is the free homepage preview?',
-    a: 'A personalized first-stage homepage for your business, shared through a private link. It shows the direction, layout and message so you can see what your new site could look like before deciding to move forward. There is no payment or commitment to request one.',
-  },
-  {
-    q: 'What happens after I get in touch?',
-    a: 'Colin follows up personally, by email or phone, to learn about your business and what you need. If it is a fit, he creates your homepage preview and shares the link. If you want to go ahead, you get a clear quote.',
-  },
-  {
-    q: 'Do I need to book a call first?',
-    a: 'No. You can send a few details without scheduling anything. If you would rather talk it through, you can book a call, but it is optional.',
-  },
-  {
-    q: 'Is the interactive demo on the homepage a real business?',
-    a: 'No. The businesses in the demo are illustrative examples, and the demo inquiry is simulated in your browser. For real IronWeb websites, see the Work page.',
-  },
-];
-
-// ---------- Automations (2026-10-10) ----------
-// status: 'ready' = confirmed and deliverable now (the four confirmed Operate automations);
-//         'scoped' = available to scope per business, not a confirmed standard item;
-//         'dev'    = in development, interest only.
+// Operate building blocks (IW Operate page).
 export const AUTOMATIONS = [
   {
     key: 'missed-call',
     name: 'Missed-call text-back',
-    status: 'ready',
-    problem: 'You can\'t answer mid-job or mid-showing, and a caller who reaches voicemail may just call the next business.',
+    icon: 'phone',
+    problem: 'You can\'t answer mid-job, and a caller who reaches voicemail may just call the next contractor.',
     does: 'When a call goes unanswered, the caller gets a text right away, so the conversation keeps going until you can call back.',
   },
   {
     key: 'speed-to-lead',
-    name: 'Instant inquiry response',
-    status: 'ready',
-    problem: 'Website inquiries sit in an inbox until you get back to your desk.',
-    does: 'The customer gets an immediate acknowledgement and you get a notification with their details, so you can follow up while it\'s fresh.',
+    name: 'Instant lead response',
+    icon: 'message',
+    problem: 'Website and ad inquiries sit until you get back to the truck.',
+    does: 'The customer gets an immediate reply and you get the details, so you can follow up while they are still deciding.',
   },
   {
-    key: 'follow-up',
-    name: 'Follow-up sequences',
-    status: 'ready',
-    problem: 'Following up with every "not yet" by hand is repetitive, and it\'s the first thing to slip in a busy week.',
-    does: 'Scheduled follow-up messages over the following weeks, so a "maybe next spring" isn\'t forgotten.',
+    key: 'reception',
+    name: 'AI receptionist',
+    icon: 'user',
+    problem: 'Calls come in while you are on a ladder, on a roof or with a customer.',
+    does: 'An AI receptionist answers, gathers the project details and captures the callback, so the job doesn\'t go to whoever picked up first.',
   },
   {
     key: 'reviews',
     name: 'Review requests',
-    status: 'ready',
+    icon: 'star',
     problem: 'Happy customers rarely leave a review unless someone asks at the right moment.',
-    does: 'A short, polite review request goes out after a job closes, without anyone having to remember.',
+    does: 'A short, polite review request goes out after the job closes, without anyone having to remember.',
   },
   {
-    key: 'appointments',
-    name: 'Appointment admin',
-    status: 'scoped',
-    problem: 'Confirming, reminding and rescheduling appointments eats into time you could spend selling.',
-    does: 'Booking confirmations and reminders tied to your calendar, set up around how you already schedule.',
+    key: 'crm',
+    name: 'CRM and follow-up',
+    icon: 'calendar',
+    problem: 'Leads live in your texts, your voicemail and your memory, and the "not yet" ones get forgotten.',
+    does: 'Every lead lands on one simple pipeline, and scheduled follow-up keeps the "maybe next spring" jobs warm.',
   },
 ];
-
-export const BUSINESS_TYPES = [
-  'Contractor / home services',
-  'Real estate',
-  'Restaurant / hospitality',
-  'Music / entertainment',
-  'Other',
-];
-
-export const SERVICE_CHOICES = [
-  'Compact Build',
-  'Build',
-  'Growth',
-  'Paid Ads',
-  'Automations',
-  'Contractor Bundle',
-  'Real Estate Bundle',
-  'Free homepage preview',
-  'Not Sure',
-];
-
-export const TIMELINES = ['As soon as possible', 'Within a month', '1–3 months', 'Just exploring'];
-export const BUDGETS = ['Under $1,000', '$1,000–$2,500', '$2,500–$5,000', '$5,000+', 'Not sure yet'];

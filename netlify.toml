@@ -8,26 +8,59 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# ---- Old routes from the previous site ----
+# ---- Old routes (previous site and pre-v3 pages). force = true so stale copies never serve. ----
+[[redirects]]
+  from = "/services"
+  to = "/"
+  status = 301
+  force = true
 [[redirects]]
   from = "/services/*"
-  to = "/services/"
+  to = "/"
   status = 301
+  force = true
+[[redirects]]
+  from = "/automations/bundles/*"
+  to = "/operate/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/automations/*"
+  to = "/operate/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/automations"
+  to = "/operate/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/growth/*"
+  to = "/grow/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/growth"
+  to = "/grow/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/contractor-demo/*"
+  to = "/demo/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/contractor-demo"
+  to = "/demo/"
+  status = 301
+  force = true
 [[redirects]]
   from = "/pricing"
-  to = "/build/"
+  to = "/"
   status = 301
 [[redirects]]
   from = "/pricing/*"
-  to = "/build/"
-  status = 301
-[[redirects]]
-  from = "/operate"
-  to = "/automations/"
-  status = 301
-[[redirects]]
-  from = "/operate/*"
-  to = "/automations/"
+  to = "/"
   status = 301
 [[redirects]]
   from = "/work"
@@ -35,10 +68,6 @@
   status = 301
 [[redirects]]
   from = "/work/*"
-  to = "/portfolio/"
-  status = 301
-[[redirects]]
-  from = "/portfolio/*"
   to = "/portfolio/"
   status = 301
 
@@ -50,7 +79,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'self' https://api.leadconnectorhq.com; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'"
 
 [[headers]]
   for = "/assets/*"

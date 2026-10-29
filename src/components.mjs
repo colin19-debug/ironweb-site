@@ -1,5 +1,5 @@
 // Reusable HTML pieces. Every page is assembled from these by scripts/build.mjs.
-import { SITE, NAV, BOOKING, HERO_VIDEO, BUSINESS_TYPES, SERVICE_CHOICES, TIMELINES, BUDGETS, DEMO_INDUSTRIES, DEMO_JOURNEY, SPEED_BUSINESS_TYPES, DEMO_VIDEO } from './data.mjs';
+import { SITE, NAV, BOOKING, HERO_VIDEO, TRADES, DEMO_INDUSTRIES, DEMO_JOURNEY, AUDIT_HREF, AUDIT_CTA, DEMO_HREF, DEMO_CTA } from './data.mjs';
 
 import fs from 'node:fs';
 import crypto from 'node:crypto';
@@ -39,20 +39,9 @@ const ICONS = {
 export const icon = (name, cls = 'i') =>
   `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICONS[name]}</svg>`;
 
-export const bookHref = () => '/contact/#book';
-// Primary CTA (2026-10-10): the interactive demo on the homepage. On the homepage this is a same-document
-// fragment link, so it scrolls (smoothly unless reduced motion) without reloading.
-export const demoHref = () => '/#demo';
-export const DEMO_CTA = 'Explore the demo';
-// Secondary CTA after the demo: the existing contact flow (free homepage preview request form).
-export const talkHref = (onHome = false) => (onHome ? '#talk' : '/contact/#talk');
-export const TALK_CTA = "Let's talk about your website";
-// Homepage hero primary (2026-10-11): the speed-to-lead "Text me" form at #talk.
-export const SPEED_CTA = 'Try it: text me the demo';
-
 export function head({ title, fullTitle: forcedTitle, description, path, ogType = 'website', preloadHero = false, jsonld = [], scripts = [] }) {
   const url = `${SITE.domain}${path}`;
-  const fullTitle = forcedTitle || (title ? `${title} | ${SITE.name}` : `${SITE.name} | Websites and Lead Follow-Up`);
+  const fullTitle = forcedTitle || (title ? `${title} | ${SITE.name}` : `${SITE.name} | Websites, Ads and Automations for Contractors`);
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -86,17 +75,22 @@ ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j)}</sc
 }
 
 export function header(currentPath, { overlay = false } = {}) {
-  const isCurrent = (href) => (href === '/automations/' ? currentPath === href : currentPath.startsWith(href)) ? ' aria-current="page"' : '';
-  const servicesActive = ['/services/', '/build/', '/growth/', '/automations/'].some((p) => currentPath.startsWith(p));
+  const isCurrent = (href) => ((href === '/' ? currentPath === '/' : currentPath.startsWith(href)) ? ' aria-current="page"' : '');
   const items = NAV.map((item) => {
     if (!item.children) return `<li><a class="nav-link" href="${item.href}"${isCurrent(item.href)}>${item.label}</a></li>`;
+    const active = item.children.some((c) => currentPath.startsWith(c.href));
     return `<li class="has-menu">
-        <button class="nav-link menu-toggle${servicesActive ? ' is-active' : ''}" type="button" aria-expanded="false" aria-controls="services-menu">${item.label}${icon('chevron', 'i i-chev')}</button>
+        <button class="nav-link menu-toggle${active ? ' is-active' : ''}" type="button" aria-expanded="false" aria-controls="services-menu">${item.label}${icon('chevron', 'i i-chev')}</button>
         <ul class="submenu" id="services-menu">
           ${item.children.map((c) => `<li><a href="${c.href}"${isCurrent(c.href)}><span>${c.label}</span><small>${c.note}</small></a></li>`).join('\n          ')}
         </ul>
       </li>`;
   }).join('\n      ');
+  const mobileItems = NAV.map((item) => (item.children
+    ? `<li class="mobile-group"><span>${item.label}</span>
+        <ul>${item.children.map((c) => `<li><a href="${c.href}">${c.label}</a></li>`).join('')}</ul>
+      </li>`
+    : `<li><a href="${item.href}">${item.label}</a></li>`)).join('\n      ');
   return `<a class="skip" href="#main">Skip to content</a>
 <header class="site-header${overlay ? ' site-header--overlay' : ''}">
   <div class="header-bar">
@@ -112,15 +106,10 @@ export function header(currentPath, { overlay = false } = {}) {
   </div>
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
     <ul>
-      <li><a href="/portfolio/">Portfolio</a></li>
-      <li class="mobile-group"><span>Services</span>
-        <ul><li><a href="/services/">All services</a></li><li><a href="/build/">Websites</a></li><li><a href="/automations/">Automations</a></li><li><a href="/automations/bundles/">Bundles</a></li><li><a href="/growth/">Growth</a></li><li><a href="/contractor-demo/">Contractor demo</a></li></ul>
-      </li>
-      <li><a href="/about/">About</a></li>
-      <li><a href="/contact/">Contact</a></li>
+      ${mobileItems}
     </ul>
-    <a class="btn btn-primary btn-block" href="${demoHref()}">${DEMO_CTA} ${icon('arrow')}</a>
-    <a class="btn btn-outline btn-block" href="${talkHref()}">${TALK_CTA}</a>
+    <a class="btn btn-primary btn-block" href="${AUDIT_HREF}">${AUDIT_CTA} ${icon('arrow')}</a>
+    <a class="btn btn-outline btn-block" href="${DEMO_HREF}">${DEMO_CTA}</a>
     <p class="mobile-contact"><a href="tel:${SITE.phoneTel}">${SITE.phoneDisplay}</a></p>
   </nav>
 </header>`;
@@ -147,49 +136,19 @@ export function hero() {
   <div class="hero-frame" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-copy">
-      <p class="eyebrow hero-eyebrow">Contractors <span class="slash">/</span> Real Estate</p>
-      <h1 id="hero-title" class="hero-title">Systems that <span class="accent">Stick</span></h1>
+      <p class="eyebrow hero-eyebrow">Contractors <span class="slash">/</span> Trades</p>
+      <h1 id="hero-title" class="hero-title">Systems That <span class="accent">Stick.</span></h1>
       <p class="hero-kicker">Never miss another opportunity.</p>
-      <p class="hero-sub hero-sub--wedge">Missed-call text-back that answers every caller in under a minute.<br class="br-lg"> <strong>$97/month. No setup fee.</strong></p>
+      <p class="hero-sub hero-sub--wedge">A free audit shows where calls, leads and reviews are slipping through, and what to fix first.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary btn-sms" href="sms:${SITE.phoneTel}?&amp;body=DEMO">${icon('message')} Text DEMO to ${SITE.phoneDisplay}</a>
-        <a class="btn btn-outline" href="#talk">Or we'll text you</a>
-        <p class="hero-micro-sms">Text DEMO and see how fast we answer.</p>
-        <p class="hero-signature"><span class="sr-only">Services: </span><span>Build</span><span class="slash" aria-hidden="true">/</span><span>Growth</span><span class="slash" aria-hidden="true">/</span><span>Operate</span></p>
+        <a class="btn btn-primary" href="${AUDIT_HREF}">${AUDIT_CTA} ${icon('arrow')}</a>
+        <a class="btn btn-outline" href="${DEMO_HREF}">${DEMO_CTA}</a>
+        <p class="hero-micro-sms">Free report. No obligation.</p>
+        <p class="hero-signature"><span class="sr-only">Services: </span><span>Build</span><span class="slash" aria-hidden="true">/</span><span>Grow</span><span class="slash" aria-hidden="true">/</span><span>Operate</span></p>
       </div>
     </div>
   </div>
   ${pause}
-</section>`;
-}
-
-// CSS/HTML-only phone showing an example speed-to-lead thread. Saltmarsh Realty is IronWeb's demo brand.
-export function leadPhone() {
-  return `<figure class="lead-phone" aria-labelledby="lp-cap">
-      <p class="lp-badge"><span class="lp-dot" aria-hidden="true"></span>New inquiry · replied in 0:42</p>
-      <div class="lp-device">
-        <div class="lp-top"><span class="lp-avatar" aria-hidden="true">SR</span><span><span class="lp-name">Saltmarsh Realty</span><span class="lp-sub">Text message</span></span></div>
-        <ol class="lp-thread" aria-label="Example text conversation">
-          <li class="lp-in"><span class="sr-only">Lead: </span>Hi! Is the 3-bed colonial you listed still available? Could I see it this weekend?<span class="lp-time">2:14 PM</span></li>
-          <li class="lp-out"><span class="sr-only">Saltmarsh Realty: </span>Hi, thanks for reaching out to Saltmarsh Realty! Yes, it's still available. Would Saturday at 11 or Sunday at 1 work for a showing?<span class="lp-time">2:15 PM</span></li>
-          <li class="lp-in"><span class="sr-only">Lead: </span>Saturday at 11 works.<span class="lp-time">2:17 PM</span></li>
-          <li class="lp-out"><span class="sr-only">Saltmarsh Realty: </span>You're booked for Saturday at 11:00 AM. We'll text the address and a reminder the day before.<span class="lp-time">2:17 PM</span></li>
-          <li class="lp-event">${icon('calendar')} Showing booked · Sat 11:00 AM</li>
-        </ol>
-      </div>
-      <figcaption id="lp-cap">Example: a real estate lead, answered automatically</figcaption>
-    </figure>`;
-}
-
-export function proofStrip(third) {
-  return `<section class="proof-strip" aria-label="At a glance">
-  <div class="wrap">
-    <ul class="proof-cells">
-      <li><strong>&lt; 60 sec</strong><span>Text-back on every new inquiry</span></li>
-      <li><strong>3–6 months</strong><span>Of follow-up for the "not yet" leads</span></li>
-      <li><strong>Live client sites</strong><span>TMR Construction · All Phaze Property Solutions · ${esc(third)}</span></li>
-    </ul>
-  </div>
 </section>`;
 }
 
@@ -217,131 +176,68 @@ const field = (id, label, control, { required = false, hint = '' } = {}) => `<di
         <p class="field-error" aria-live="polite"></p>
       </div>`;
 
+// SMS consent is always optional (Colin, 2026-10-28): texting is never a condition of reaching IronWeb.
 const smsConsent = (id) => `<div class="field field-check">
         <input type="checkbox" id="${id}-sms" name="smsConsent" value="yes">
-        <label for="${id}-sms">I agree to receive marketing and informational text messages from ${SITE.legalName} (IronWeb Digital) at the phone number I provided, including automated texts about my inquiry and scheduling. Consent is not a condition of any purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <a href="/privacy/">Privacy Policy</a> and <a href="/terms/">Terms</a>. (Optional.)</label>
+        <label for="${id}-sms">I agree to receive text messages from ${SITE.legalName} (IronWeb Digital) at the phone number I provided, including automated texts about my request and scheduling. Consent is not a condition of any purchase. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <a href="/privacy/">Privacy Policy</a> and <a href="/terms/">Terms</a>. (Optional.)</label>
       </div>`;
 
-// Optional fields live in a native <details> disclosure: keyboard/touch operable, and every field
-// stays in the raw HTML and in the submitted payload. lead-form.js opens it if a field inside is invalid.
-const moreDetails = (id, inner, { open = false } = {}) => `<details class="more-details" id="${id}-more"${open ? ' open' : ''}>
-        <summary><span>Add project details</span> <span class="opt">(optional)</span>${icon('chevron', 'i i-chev')}</summary>
-        <div class="more-body">
-        ${inner}
-        </div>
-      </details>`;
-
-const formTail = (id, buttonText, success, { subtle = false } = {}) => `<div class="hp" aria-hidden="true"><label for="${id}-bf">Leave this field empty</label><input id="${id}-bf" name="bot_field" tabindex="-1" autocomplete="off"></div>
+const formTail = (id, buttonText, success) => `<div class="hp" aria-hidden="true"><label for="${id}-bf">Leave this field empty</label><input id="${id}-bf" name="bot_field" tabindex="-1" autocomplete="off"></div>
       <div class="form-foot">
-        <button class="btn ${subtle ? 'btn-outline' : 'btn-primary'}" type="submit">${buttonText} ${icon('arrow')}</button>
+        <button class="btn btn-primary" type="submit">${buttonText} ${icon('arrow')}</button>
         <p class="form-note">By sending this you agree to our <a href="/privacy/">Privacy Policy</a>.</p>
       </div>
       <div class="form-status" role="alert" aria-live="assertive"></div>
       <template data-success>${success}</template>`;
 
-const nameEmail = (id) => `${field(`${id}-name`, 'Name', `<input id="${id}-name" name="name" type="text" autocomplete="name" required data-error="Enter your name." maxlength="120">`, { required: true })}
-      ${field(`${id}-email`, 'Email', `<input id="${id}-email" name="email" type="email" autocomplete="email" required data-error="Enter your email address." maxlength="200">`, { required: true })}`;
+const nameField = (id) => field(`${id}-name`, 'Name', `<input id="${id}-name" name="name" type="text" autocomplete="name" required data-error="Enter your name." maxlength="120">`, { required: true });
+const emailField = (id) => field(`${id}-email`, 'Email', `<input id="${id}-email" name="email" type="email" autocomplete="email" required data-error="Enter your email address." maxlength="200">`, { required: true });
+const bizField = (id, required) => field(`${id}-biz`, 'Business name', `<input id="${id}-biz" name="businessName" type="text" autocomplete="organization" maxlength="160"${required ? ' required data-error="Enter your business name."' : ''}>`, { required });
+const tradeField = (id) => field(`${id}-trade`, 'Trade', `<select id="${id}-trade" name="trade"><option value="">Choose one</option>${opt(TRADES)}</select>`);
+const siteField = (id) => field(`${id}-site`, 'Current website', `<input id="${id}-site" name="website" type="text" inputmode="url" placeholder="yourbusiness.com" maxlength="300">`);
 
-const phoneField = (id) => field(`${id}-phone`, 'Phone', `<input id="${id}-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20">`);
-
-export function inquiryForm(id = 'inquiry', { heading = 'Send a short inquiry', detailsOpen = false, subtle = false } = {}) {
-  return `<form class="lead-form" id="${id}" data-lead-form="inquiry" aria-labelledby="${id}-h" novalidate>
-      <h3 id="${id}-h" class="form-title">${heading}</h3>
+// The main lead path (intent `audit`): tag "website lead" starts Colin's text workflow, and the lead gets an
+// open opportunity in the "Website Leads" pipeline (netlify/lib/ghl.mjs).
+export function auditForm(id = 'audit-form') {
+  return `<form class="lead-form" id="${id}" data-lead-form="audit" aria-labelledby="${id}-h" novalidate>
+      <h3 id="${id}-h" class="form-title">Request your free audit</h3>
       <div class="grid-2">
-      ${nameEmail(id)}
+      ${nameField(id)}
+      ${bizField(id, true)}
+      ${field(`${id}-phone`, 'Mobile phone', `<input id="${id}-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required data-error="Enter your mobile number." maxlength="20">`, { required: true })}
+      ${emailField(id)}
+      ${tradeField(id)}
+      ${field(`${id}-town`, 'Town or service area', `<input id="${id}-town" name="town" type="text" autocomplete="address-level2" maxlength="120">`)}
       </div>
-      ${moreDetails(id, `<div class="grid-2">
-        ${phoneField(id)}
-        ${field(`${id}-biz`, 'Business name', `<input id="${id}-biz" name="businessName" type="text" autocomplete="organization" maxlength="160">`)}
-        ${field(`${id}-type`, 'Business type', `<select id="${id}-type" name="businessType"><option value="">Choose one</option>${opt(BUSINESS_TYPES)}</select>`)}
-        ${field(`${id}-site`, 'Current website', `<input id="${id}-site" name="website" type="text" inputmode="url" placeholder="yourbusiness.com" maxlength="300">`)}
-        ${field(`${id}-svc`, 'What do you need?', `<select id="${id}-svc" name="service"><option value="">Choose one</option>${opt(SERVICE_CHOICES)}</select>`)}
-        ${field(`${id}-time`, 'Timeline', `<select id="${id}-time" name="timeline"><option value="">Choose one</option>${opt(TIMELINES)}</select>`)}
-        ${field(`${id}-budget`, 'Budget', `<select id="${id}-budget" name="budget"><option value="">Choose one</option>${opt(BUDGETS)}</select>`)}
-        </div>
-        ${field(`${id}-msg`, 'Message', `<textarea id="${id}-msg" name="message" rows="4" maxlength="3000"></textarea>`)}
-        ${smsConsent(id)}`, { open: detailsOpen })}
-      ${formTail(id, 'Send inquiry', `<h3 tabindex="-1">Thanks, {firstName}. Your inquiry is in.</h3><p>Colin will follow up personally. If it's urgent, call or text <a href="tel:${SITE.phoneTel}">${SITE.phoneDisplay}</a>.</p>`, { subtle })}
+      ${siteField(id)}
+      ${field(`${id}-msg`, 'Anything you want us to look at?', `<textarea id="${id}-msg" name="message" rows="3" maxlength="3000"></textarea>`)}
+      ${smsConsent(id)}
+      ${formTail(id, 'Request my free audit', `<h3 tabindex="-1">Thanks, {firstName}. Your audit request is in.</h3><p>Colin will run your audit and follow up personally to walk you through it. Questions before then? Call <a href="tel:${SITE.phoneTel}">${SITE.phoneDisplay}</a>.</p>`)}
     </form>`;
 }
 
-// "Let's talk about your website": the existing website/free-homepage-preview request. Backend intent stays
-// `demo` (source "Website - Demo Request", tag website-demo-request) so CRM mappings don't change.
-export function talkForm(id = 'talk', { detailsOpen = false } = {}) {
-  return `<form class="lead-form" id="${id}" data-lead-form="demo" aria-labelledby="${id}-h" novalidate>
-      <h3 id="${id}-h" class="form-title">Start the conversation</h3>
+// IW Build page: personal homepage preview (intent `preview`, tag needs-demo starts the website demo workflow).
+export function previewForm(id = 'preview-form') {
+  return `<form class="lead-form" id="${id}" data-lead-form="preview" aria-labelledby="${id}-h" novalidate>
+      <h3 id="${id}-h" class="form-title">Get a free homepage preview</h3>
       <div class="grid-2">
-      ${nameEmail(id)}
+      ${nameField(id)}
+      ${emailField(id)}
+      ${bizField(id, false)}
+      ${tradeField(id)}
+      ${field(`${id}-phone`, 'Mobile phone', `<input id="${id}-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20">`)}
+      ${siteField(id)}
       </div>
-      ${field(`${id}-biz`, 'Business name', `<input id="${id}-biz" name="businessName" type="text" autocomplete="organization" maxlength="160">`)}
-      ${moreDetails(id, `<div class="grid-2">
-        ${field(`${id}-site`, 'Current website', `<input id="${id}-site" name="website" type="text" inputmode="url" placeholder="yourbusiness.com" maxlength="300">`)}
-        ${field(`${id}-type`, 'Business type', `<select id="${id}-type" name="businessType"><option value="">Choose one</option>${opt(BUSINESS_TYPES)}</select>`)}
-        ${phoneField(id)}
-        </div>
-        ${field(`${id}-msg`, 'What do you need from your website?', `<textarea id="${id}-msg" name="message" rows="3" maxlength="3000"></textarea>`)}
-        ${smsConsent(id)}`, { open: detailsOpen })}
-      ${formTail(id, 'Start the conversation', `<h3 tabindex="-1">Thanks, your request is in.</h3><p>Colin will follow up personally to learn more about your business and talk through your website.</p>`)}
+      ${field(`${id}-msg`, 'What should your website do better?', `<textarea id="${id}-msg" name="message" rows="3" maxlength="3000"></textarea>`)}
+      ${smsConsent(id)}
+      ${formTail(id, 'Get my homepage preview', `<h3 tabindex="-1">Thanks, {firstName}. Your preview request is in.</h3><p>Colin will follow up personally and, if it's a fit, build a homepage preview for your business on a private link.</p>`)}
     </form>`;
 }
 
-// Homepage speed-to-lead form ("Text me"). Intent `speed` → tag "website lead" (fires the CRM workflow).
-// Phone and SMS consent are required here by Colin's decision (2026-10-11); the Contact page keeps an
-// email-only path with optional consent so texting is never a condition of reaching IronWeb.
-export function speedForm(id = 'talk-home') {
-  return `<form class="lead-form speed-form" id="${id}" data-lead-form="speed" aria-labelledby="${id}-h" novalidate>
-      <h3 id="${id}-h" class="form-title">Text me the demo</h3>
-      <div class="grid-2">
-      ${field(`${id}-name`, 'Name', `<input id="${id}-name" name="name" type="text" autocomplete="name" required data-error="Enter your name." maxlength="120">`, { required: true })}
-      ${field(`${id}-phone`, 'Mobile phone', `<input id="${id}-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required data-error="Enter your mobile number so we can text you." maxlength="20">`, { required: true })}
-      ${field(`${id}-email`, 'Email', `<input id="${id}-email" name="email" type="email" autocomplete="email" required data-error="Enter your email address." maxlength="200">`, { required: true })}
-      ${field(`${id}-type`, 'Business type', `<select id="${id}-type" name="businessType"><option value="">Choose one</option>${opt(SPEED_BUSINESS_TYPES)}</select>`)}
-      </div>
-      <details class="more-details" id="${id}-more">
-        <summary><span>Project details</span> <span class="opt">(optional)</span>${icon('chevron', 'i i-chev')}</summary>
-        <div class="more-body">
-        ${field(`${id}-msg`, 'Tell us about your business or project', `<textarea id="${id}-msg" name="message" rows="3" maxlength="3000"></textarea>`)}
-        </div>
-      </details>
-      <div class="field field-check field-check--required">
-        <input type="checkbox" id="${id}-sms" name="smsConsent" value="yes" required data-error="Tick the box so we can text you.">
-        <label for="${id}-sms">I agree to receive texts from ${SITE.legalName} (IronWeb Digital) about my inquiry. Msg &amp; data rates may apply. Reply STOP to opt out. Msg frequency varies. Reply HELP for help. Consent is not a condition of purchase. See our <a href="/privacy/">Privacy Policy</a> and <a href="/terms/">Terms</a>. <span class="req">(required)</span></label>
-        <p class="field-error" aria-live="polite"></p>
-      </div>
-      <div class="hp" aria-hidden="true"><label for="${id}-bf">Leave this field empty</label><input id="${id}-bf" name="bot_field" tabindex="-1" autocomplete="off"></div>
-      <div class="form-foot">
-        <button class="btn btn-primary" type="submit">Text me now ${icon('arrow')}</button>
-        <p class="form-note form-note--speed">You'll get a text from us in under a minute. It's the same system we set up for your business.</p>
-      </div>
-      <div class="form-status" role="alert" aria-live="assertive"></div>
-      <template data-success><h3 tabindex="-1">Thanks, {firstName}. You're in.</h3><p>Watch your phone for a text from IronWeb Digital. Colin will follow up personally.</p></template>
-    </form>`;
-}
-
-export function agenticForm(id = 'agentic') {
-  return `<form class="lead-form" id="${id}" data-lead-form="agentic" aria-labelledby="${id}-h" novalidate>
-      <h3 id="${id}-h" class="form-title">Register interest</h3>
-      <div class="grid-2">
-      ${nameEmail(id)}
-      ${field(`${id}-biz`, 'Business name', `<input id="${id}-biz" name="businessName" type="text" autocomplete="organization" maxlength="160">`)}
-      ${field(`${id}-type`, 'Business type', `<select id="${id}-type" name="businessType"><option value="">Choose one</option>${opt(BUSINESS_TYPES)}</select>`)}
-      </div>
-      ${field(`${id}-msg`, 'What would you want it to handle?', `<textarea id="${id}-msg" name="message" rows="3" maxlength="3000"></textarea>`)}
-      ${formTail(id, 'Register interest', `<h3 tabindex="-1">Thanks, {firstName}. You're on the interest list.</h3><p>This is an interest list, not an order. Colin will be in touch when there's something real to show.</p>`)}
-    </form>`;
-}
-
-// Booking block. Uses the real calendar when BOOKING.url is set; otherwise says so plainly.
 export function bookingBlock() {
-  if (BOOKING.url) {
-    return `<div class="booking">
-      ${BOOKING.embed ? `<iframe class="booking-frame" src="${esc(BOOKING.url)}" title="Book a discovery call" loading="lazy"></iframe>` : ''}
+  return `<div class="booking">
+      ${BOOKING.embed ? `<iframe class="booking-frame" src="${esc(BOOKING.url)}" title="Book a call with IronWeb Digital" loading="lazy"></iframe>` : ''}
       <p class="booking-fallback">Calendar not loading? <a href="${esc(BOOKING.url)}" target="_blank" rel="noopener">Open the booking page ${icon('external')}</a></p>
-    </div>`;
-  }
-  return `<div class="booking booking--pending">
-      <p class="booking-status">${icon('calendar')} Online booking is being connected.</p>
-      <p>Until it's live, call or text <a href="tel:${SITE.phoneTel}">${SITE.phoneDisplay}</a>, email <a href="mailto:${SITE.email}">${SITE.email}</a>, or send the short inquiry form below and Colin will set up a time with you.</p>
     </div>`;
 }
 
@@ -353,16 +249,17 @@ export function contactLines() {
 }
 
 export function footer() {
+  const services = NAV.find((n) => n.children).children;
   return `<footer class="site-footer">
   <div class="wrap footer-grid">
     <div class="footer-brand">
       <a class="brand" href="/" aria-label="IronWeb Digital home"><img src="/assets/img/ironweb-logo.svg" alt="IronWeb Digital" width="680" height="160" loading="lazy"></a>
-      <p class="footer-tagline">Systems that Stick</p>
-      <p>Automations and websites for contractors, real estate and local businesses. Based in Swansea, Massachusetts. Digital services nationwide.</p>
+      <p class="footer-tagline">Systems That Stick.</p>
+      <p>Websites, ads and automations for contractors and trades. Based in Swansea, Massachusetts.</p>
     </div>
     <nav aria-label="Footer: services">
       <p class="footer-h">Services</p>
-      <ul><li><a href="/services/">All services</a></li><li><a href="/build/">Websites</a></li><li><a href="/automations/">Automations</a></li><li><a href="/automations/bundles/">Bundles</a></li><li><a href="/growth/">Growth</a></li><li><a href="/contractor-demo/">Contractor demo</a></li></ul>
+      <ul>${services.map((c) => `<li><a href="${c.href}">${c.label}</a></li>`).join('')}<li><a href="/demo/">Demo</a></li></ul>
     </nav>
     <nav aria-label="Footer: company">
       <p class="footer-h">Company</p>
@@ -392,14 +289,11 @@ export function faqList(items) {
   </div>`;
 }
 
-// Default: talk about your website, with the demo second. Growth and the automation pages pass
-// `primary: 'book'` because a website conversation isn't their natural next step.
-export function ctaBand({ title = 'Let\'s talk about your website.', text = 'Send a few details and Colin will follow up personally. If it\'s a fit, you\'ll see a free homepage preview before you commit.', primary = 'talk' } = {}) {
-  const actions = primary === 'book'
-    ? `<a class="btn btn-primary" href="${bookHref()}">Book a Call ${icon('arrow')}</a>
-      <a class="btn btn-outline" href="/contact/#inquiry">Send an inquiry</a>`
-    : `<a class="btn btn-primary" href="${talkHref()}">${TALK_CTA} ${icon('arrow')}</a>
-      <a class="btn btn-outline" href="${demoHref()}">${DEMO_CTA}</a>`;
+// Closing band: one primary action (red), one quieter secondary.
+export function ctaBand({ title = 'Find out what is costing you jobs.', text = 'Request a free audit of your Google profile, listings, reviews, website and map ranking. Colin walks you through it.', primary = 'audit' } = {}) {
+  const audit = (cls) => `<a class="btn ${cls}" href="${AUDIT_HREF}">${AUDIT_CTA}${cls === 'btn-primary' ? ` ${icon('arrow')}` : ''}</a>`;
+  const demo = (cls) => `<a class="btn ${cls}" href="${DEMO_HREF}">${DEMO_CTA}${cls === 'btn-primary' ? ` ${icon('arrow')}` : ''}</a>`;
+  const actions = primary === 'demo' ? `${demo('btn-primary')}\n      ${audit('btn-outline')}` : `${audit('btn-primary')}\n      ${demo('btn-outline')}`;
   return `<section class="section cta-band">
   <div class="wrap cta-band-inner">
     <div>
@@ -413,9 +307,9 @@ export function ctaBand({ title = 'Let\'s talk about your website.', text = 'Sen
 </section>`;
 }
 
-// ---------- Interactive demo (2026-10-10) ----------
+// ---------- Website demo (IW Build page) ----------
 // Illustrative businesses only; the inquiry is simulated in the browser by /assets/js/demo.js and sends
-// nothing. All three industries are rendered as static tabpanels so the content exists without JS.
+// nothing. All three examples are rendered as static tabpanels so the content exists without JS.
 const mockSite = (d, i) => `<div class="dx-site" id="dx-panel-${d.key}" role="tabpanel" aria-labelledby="dx-tab-${d.key}" data-industry="${d.key}" data-host="${d.host}"${i ? ' hidden' : ''}>
           <div class="dx-scroll" tabindex="0" aria-label="Example website for ${esc(d.biz)}. Scrollable.">
             <div class="m-nav"><span class="m-logo">${esc(d.biz)}</span><span class="m-links" aria-hidden="true"><span>Services</span><span>About</span><span>Contact</span></span><span class="m-call" aria-hidden="true">${icon('phone')}<span>Call</span></span></div>
@@ -458,16 +352,16 @@ const mockSite = (d, i) => `<div class="dx-site" id="dx-panel-${d.key}" role="ta
         </div>`;
 
 export function interactiveDemo() {
-  return `<section class="section dx-section" id="demo" aria-labelledby="demo-title">
+  return `<section class="section dx-section" id="website-demo" aria-labelledby="demo-title">
   <div class="wrap">
     <div class="section-head">
-      ${sectionLabel('Interactive demo')}
+      ${sectionLabel('Website demo')}
       <h2 id="demo-title">See it in action.</h2>
-      <p>Pick an industry and walk through what a customer experiences on an IronWeb website, from first impression to the text they get back.</p>
+      <p>Pick a trade and walk through what a homeowner experiences on an IronWeb website, from first impression to the text they get back.</p>
     </div>
     <div class="dx" data-demo>
       <div class="dx-controls">
-        <div class="dx-tabs" role="tablist" aria-label="Choose an industry">
+        <div class="dx-tabs" role="tablist" aria-label="Choose a trade">
           ${DEMO_INDUSTRIES.map((d, i) => `<button type="button" role="tab" id="dx-tab-${d.key}" aria-controls="dx-panel-${d.key}" aria-selected="${i ? 'false' : 'true'}"${i ? ' tabindex="-1"' : ''}>${esc(d.tab)}</button>`).join('\n          ')}
         </div>
         <div class="dx-view" role="group" aria-label="Preview size">
@@ -487,24 +381,18 @@ export function interactiveDemo() {
           <p class="dx-disclaimer">Example businesses. The demo form doesn't send anything.</p>
         </div>
       </div>
-      ${DEMO_VIDEO.src ? `<div class="dx-video">
-        <div class="dx-video-copy">
-          <h3>Watch a real lead get answered.</h3>
-          <p>A 60-second screen recording of the Saltmarsh Realty demo: an inquiry comes in, and the text goes out before anyone touches a phone.</p>
-        </div>
-        <video class="dx-video-player" controls preload="none" playsinline${DEMO_VIDEO.poster ? ` poster="${DEMO_VIDEO.poster}"` : ''}><source src="${DEMO_VIDEO.src}" type="video/mp4"></video>
-      </div>` : ''}
       <div class="dx-after">
         <div>
           <h3>Picture this for your business.</h3>
-          <p>Try it from the customer's side: send yourself the demo and see how fast the text arrives.</p>
+          <p>Your customers see your website first, make it easy for them to choose you.</p>
         </div>
         <div class="dx-after-actions">
-          <a class="btn btn-primary" href="#talk">${SPEED_CTA} ${icon('arrow')}</a>
-          <a class="btn btn-outline" href="#work">See real client sites</a>
+          <a class="btn btn-primary" href="#preview">Get a free homepage preview ${icon('arrow')}</a>
+          <a class="btn btn-outline" href="/portfolio/">See real client sites</a>
         </div>
       </div>
     </div>
   </div>
 </section>`;
 }
+

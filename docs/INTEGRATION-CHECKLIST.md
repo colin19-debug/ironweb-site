@@ -1,11 +1,21 @@
-# Integration checklist (private — not deployed)
+# Integration checklist (private, not deployed)
 
-Status on 2026-10-07: the website frontend, forms and server function are built and tested
-against a mock CRM. **Nothing is connected to the live CRM or calendar yet.** Until it is:
+## v3 status (2026-10-28) — read this first
+The CRM is connected in Production (`GHL_API_KEY`, `GHL_LOCATION_ID`). Sections below are history; where they
+mention the `speed`, `inquiry`, `demo` or `agentic` forms, those were removed in v3.
 
-- Every form shows "Nothing was sent. The online form isn't connected yet." with phone and email.
-  It never shows a success message without the CRM accepting the lead.
-- Every "Book a Call" goes to `/contact/#book`, which says online booking is being connected.
+| Form | Where | Tags | Opportunity | SMS consent |
+|---|---|---|---|---|
+| `audit` | /contact/#audit (every "Request your free audit") | `website lead`, `website-audit-request`, `source-website`, `trade-<trade>`, `sms-consent` if ticked | One open opportunity in pipeline **"Website Leads"**, first stage (looked up by name; `GHL_PIPELINE_ID` + `GHL_PIPELINE_STAGE_ID` override) | Optional |
+| `preview` | /build/#preview | `needs-demo`, `source-website`, `trade-<trade>`, `sms-consent` if ticked | None | Optional |
+| contractor demo | /demo/ | see section 9 | demo pipeline | Optional |
+
+- The "website lead" workflow is published and tag-triggered: it texts the prospect and Colin. **Because consent is
+  optional, the prospect text must be gated on the `sms-consent` tag** (If/Else in the workflow), or prospects who
+  didn't opt in will be texted.
+- Opportunity creation is best-effort: if the pipeline lookup fails, the lead still succeeds (tags fire the
+  workflow) and the function logs `[crm] opportunity failed`.
+- Booking: the `ironweb-contractor-demo` calendar is embedded on /demo/ and /contact/.
 
 ## 1. CRM (GHL sub-account for IronWeb Digital)
 

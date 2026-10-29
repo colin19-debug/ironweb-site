@@ -8,7 +8,7 @@ import path from 'node:path';
 import os from 'node:os';
 
 const BASE = process.env.BASE || 'http://localhost:3001';
-const PAGES = ['/', '/build/', '/automations/', '/automations/bundles/', '/contractor-demo/', '/portfolio/', '/contact/'];
+const PAGES = ['/', '/build/', '/grow/', '/operate/', '/demo/', '/portfolio/', '/contact/'];
 const chromeRoot = path.join(os.homedir(), '.cache/puppeteer/chrome');
 const executablePath = path.join(chromeRoot, fs.readdirSync(chromeRoot).sort().reverse()[0], 'chrome-win64/chrome.exe');
 const browser = await puppeteer.launch({ executablePath, headless: 'new' });
