@@ -31,7 +31,11 @@ Read `CLAUDE-CODE-HANDOFF.md` (approved brief), `README.md` and `docs/INTEGRATIO
 - Don't deploy to production without Colin's explicit instruction.
 
 ## Decision log (newest first)
-- 2026-10-28: v3 built on the existing engine (not deployed). Pages: / /build/ /grow/ /operate/ /demo/ /portfolio/
+- 2026-10-28: v3 DEPLOYED (deploy 6ae2b513df941fea9e990185; rollback 6ae1554d659153d5269de27f). Live checks: audit form
+  PASS (contact + website lead tags + Website Leads opportunity created); preview form PASS (needs-demo, no opp);
+  booking UNCONFIRMED (test "IronWeb TestBooking" Oct 29 8:00 AM submitted, slot still offered afterwards).
+  Test contacts to delete: IronWeb TestAudit, IronWeb TestPreview, IronWeb TestBooking (555-0199, +v3 emails).
+- 2026-10-28: v3 built on the existing engine. Pages: / /build/ /grow/ /operate/ /demo/ /portfolio/
   /about/ /contact/ (+ legal). Removed /services/ /automations/ /automations/bundles/ /growth/ /contractor-demo/ with
   301s. Old intents speed/inquiry/demo/agentic removed. Homepage industry demo moved to /build/ (trades only).
   Homes by Heroux -> homesbyheroux.com. Ocean Groove on Portfolio only. Tests: lead 15, demo 25, browser 265, QA pass.
