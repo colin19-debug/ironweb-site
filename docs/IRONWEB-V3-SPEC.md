@@ -28,7 +28,7 @@ Menu: Home · Portfolio · Services (IW Build, IW Grow, IW Operate) · Demo · A
 
 | Page | URL | Primary action | Notes |
 |---|---|---|---|
-| Home | `/` | Request an audit | Sections: hero, three products, demo teaser, process (4 steps), portfolio strip, proof (hidden until real quotes), FAQ, closing audit CTA. Keep the video hero. |
+| Home | `/` | Request an audit | Sections: hero, free audit, three products, ongoing partner (care list + typical agency vs IronWeb table, added Oct 29), demo teaser, process (4 steps), portfolio strip, proof (hidden until real quotes), FAQ, closing audit CTA. Keep the video hero. |
 | IW Build | `/build/` | Request an audit | Deep detail + why it matters to contractors. Carries the old homepage industry demo: "Picture this for your business." / "Your customers see your website first, make it easy for them to choose you." Its own form: **"Get a free homepage preview"** → tag `needs-demo` (website demo workflow). Secondary: "See real client sites" → /portfolio/. |
 | IW Grow | `/grow/` | Request an audit | No content-shoot mention. |
 | IW Operate | `/operate/` | Try the demo | Links the live demo; AI receptionist explained here. |

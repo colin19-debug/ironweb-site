@@ -31,6 +31,12 @@ Read `CLAUDE-CODE-HANDOFF.md` (approved brief), `README.md` and `docs/INTEGRATIO
 - Don't deploy to production without Colin's explicit instruction.
 
 ## Decision log (newest first)
+- 2026-10-29: Repositioned as an ongoing partner, not a tech handoff (Colin; prompted by athenagrowthmarketing.com).
+  Hero sub: "We build it, configure it, and keep the technology running. You stay in control of your customers and
+  jobs." New home section #partner (after #services): CARE (hosting, updates/maintenance, monthly check-in, on call)
+  + COMPARE table (typical agency vs IronWeb) in src/data.mjs; every row must stay literally true. Clients own
+  everything (domain, phone number, contact export) and take it all if they leave. Process step 4 Grow -> Run.
+  Not borrowed: unsourced stats, example dashboards, hidden pricing. Not deployed yet.
 - 2026-10-28: v3 DEPLOYED (deploy 6ae2b513df941fea9e990185; rollback 6ae1554d659153d5269de27f). Live checks: audit form
   PASS (contact + website lead tags + Website Leads opportunity created); preview form PASS (needs-demo, no opp);
   booking UNCONFIRMED (test "IronWeb TestBooking" Oct 29 8:00 AM submitted, slot still offered afterwards).
