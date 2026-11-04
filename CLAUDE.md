@@ -31,6 +31,8 @@ Read `CLAUDE-CODE-HANDOFF.md` (approved brief), `README.md` and `docs/INTEGRATIO
 - Don't deploy to production without Colin's explicit instruction.
 
 ## Decision log (newest first)
+- 2026-11-04: Deployed partner repositioning + About pull quote ("Welcome to the Industrial Revolution of the Digital
+  Age.") (deploy 6aeb469df47b44f6b18e9ecf; rollback 6ae2b513df941fea9e990185). No client quotes yet.
 - 2026-10-29: Repositioned as an ongoing partner, not a tech handoff (Colin; prompted by athenagrowthmarketing.com).
   Hero sub: "We build it, configure it, and keep the technology running. You stay in control of your customers and
   jobs." New home section #partner (after #services): CARE (hosting, updates/maintenance, monthly check-in, on call)
