@@ -541,6 +541,10 @@ export const about = {
       <p>With experience in construction, sitework, and inside sales, Colin knows both sides: doing the work, and chasing the next job.</p>
       <p>On a job site, answering calls, returning texts and keeping a presence online all compete with the work itself. In sales, the fastest reply and the steadiest follow-up usually win the job.</p>
       <p>IronWeb builds the systems that handle that front office for contractors, then stays on to keep them running. You stay in control of your customers and jobs, and you own everything we set up. AI is a tool here, not a replacement for you.</p>
+      <figure class="founder-quote">
+        <blockquote><p>Welcome to the Industrial Revolution of the Digital Age.</p></blockquote>
+        <figcaption>${esc(SITE.founder)}, founder</figcaption>
+      </figure>
     </div>
   </div>
 </section>
